@@ -4,7 +4,7 @@ import { NotFoundException } from '@ddd/core'
 import { Inject } from '@nestjs/common'
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs'
 import { TodoRepositoryPort } from 'src/domain/todo.repository.port'
-import { FindTodoByIdResponseDTO } from 'src/interface/dtos/find-todo-by-id/find-todo-by-id.response.dto'
+import { FindTodoByIdResponseDTO } from 'src/presentation/dtos/find-todo-by-id/find-todo-by-id.response.dto'
 
 @QueryHandler(FindTodoByIdQuery)
 export class FindTodoQueryHandler

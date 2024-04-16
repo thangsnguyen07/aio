@@ -7,6 +7,7 @@ import { NotFoundException } from '@ddd/core'
 import { Body, NotFoundException as NotFoundHttpException, Post } from '@nestjs/common'
 import { Controller, Get, Param } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
+import { MessagePattern, Payload } from '@nestjs/microservices'
 import { routesV1 } from 'src/configs/app.routes'
 
 @Controller(routesV1.version)
@@ -35,5 +36,21 @@ export class TodoController {
     const command = new CreateTodoCommand(body)
 
     await this.commandBus.execute(command)
+  }
+
+  @MessagePattern('find_todo_by_id')
+  async handleFindTodoById(@Payload() payload: any) {
+    const { data } = payload
+
+    const query = new FindTodoByIdQuery(data)
+
+    const result: FindTodoByIdResponseDTO | NotFoundException | null =
+      await this.queryBus.execute(query)
+
+    if (result instanceof NotFoundException) {
+      throw new NotFoundHttpException(result.message)
+    }
+
+    return result.toJson()
   }
 }

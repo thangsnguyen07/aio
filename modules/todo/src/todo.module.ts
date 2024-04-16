@@ -4,8 +4,9 @@ import { queryHandlers } from './application/queries'
 import './dotenv'
 import { TodoRepository } from './infrastructure/repositories/todo.repository'
 import { TodoController } from './presentation/todo.controller'
-import { TypeORMDatabaseModule } from '@ddd/core'
+import { RequestContextService, TypeORMDatabaseModule } from '@ddd/core'
 import { Module, Provider } from '@nestjs/common'
+import { APP_INTERCEPTOR } from '@nestjs/core'
 import { CqrsModule } from '@nestjs/cqrs'
 import { get } from 'env-var'
 
@@ -13,6 +14,13 @@ const infrastructure: Provider[] = [
   {
     provide: InjectionToken.TODO_REPOSITORY,
     useClass: TodoRepository,
+  },
+]
+
+const interceptors: Provider[] = [
+  {
+    provide: APP_INTERCEPTOR,
+    useClass: RequestContextService,
   },
 ]
 
@@ -34,6 +42,6 @@ const application = [...queryHandlers, ...commandHandlers]
     CqrsModule,
   ],
   controllers: [TodoController],
-  providers: [...infrastructure, ...application],
+  providers: [...interceptors, ...infrastructure, ...application],
 })
 export class TodoModule {}

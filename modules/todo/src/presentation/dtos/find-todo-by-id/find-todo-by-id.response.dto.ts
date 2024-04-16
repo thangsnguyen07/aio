@@ -18,4 +18,13 @@ export class FindTodoByIdResponseDTO extends BaseResponseDTO {
     this.title = props.getProps().title
     this.description = props.getProps().description
   }
+
+  toJson() {
+    return {
+      ...super.toJson(),
+      userId: this.userId,
+      title: this.title,
+      description: this.description,
+    }
+  }
 }

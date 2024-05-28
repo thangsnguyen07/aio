@@ -1,0 +1,36 @@
+syntax="proto3";
+
+package user;
+
+import "../common.proto";
+
+service UserService {
+    rpc CreateUser (CreateUserDto) returns (User) {}
+    rpc FindOneUser (FindUserByIdDto) returns (User) {}
+    rpc UpdateUser (UpdateUserDto) returns (User) {}
+    rpc QueryUsers (stream PaginationDto) returns (stream Users) {}
+}
+
+message User {
+    string id = 1;
+    string email = 2;
+}
+
+message Users {
+    repeated User users = 1;
+}
+
+message CreateUserDto {
+    string email = 1;
+    string password = 2;
+}
+
+message FindUserByIdDto {
+    string id = 1;
+}
+
+message UpdateUserDto {
+    string id = 1;
+    string password = 2;
+}
+

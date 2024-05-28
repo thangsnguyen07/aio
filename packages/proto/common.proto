@@ -1,0 +1,9 @@
+syntax="proto3";
+
+message Empty {}
+
+message PaginationDto {
+    int32 page = 1;
+    int32 skip = 2;
+    int32 limit = 3;
+}

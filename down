@@ -1,1 +1,1 @@
-docker stop database
+docker stop database && docker volume prune -f

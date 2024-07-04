@@ -40,11 +40,11 @@
     "user": {
       "type": "application",
       "root": "apps/user",
-      "entryFile": "main",
-      "sourceRoot": "apps/user/src",
+      "entryFile": "src/main",
+      "sourceRoot": "./",
       "compilerOptions": {
         "tsConfigPath": "apps/user/tsconfig.app.json",
-        "assets": ["lproto/**/*.proto"],
+        "assets": ["proto"],
         "watchAssets": true
       }
     }

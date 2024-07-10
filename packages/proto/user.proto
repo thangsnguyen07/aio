@@ -2,14 +2,18 @@ syntax="proto3";
 
 package user;
 
-import "../common.proto";
-
 service UserService {
     rpc CreateUser (CreateUserDto) returns (User) {}
     rpc FindOneUser (FindUserByIdDto) returns (User) {}
     rpc UpdateUser (UpdateUserDto) returns (User) {}
     rpc QueryUsers (stream PaginationDto) returns (stream Users) {}
 }
+
+message PaginationDto {
+    int32 page = 1;
+    int32 skip = 2;
+    int32 limit = 3;
+  }
 
 message User {
     string id = 1;

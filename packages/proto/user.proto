@@ -3,9 +3,9 @@ syntax="proto3";
 package user;
 
 service UserService {
-    rpc CreateUser (CreateUserDto) returns (User) {}
-    rpc FindOneUser (FindUserByIdDto) returns (User) {}
-    rpc UpdateUser (UpdateUserDto) returns (User) {}
+    rpc CreateUser (CreateUserDto) returns (ResponseDto) {}
+    rpc FindOneUser (FindUserByIdDto) returns (ResponseDto) {}
+    rpc UpdateUser (UpdateUserDto) returns (ResponseDto) {}
     rpc QueryUsers (stream PaginationDto) returns (stream Users) {}
 }
 
@@ -13,7 +13,13 @@ message PaginationDto {
     int32 page = 1;
     int32 skip = 2;
     int32 limit = 3;
-  }
+}
+
+message ResponseDto {
+    int32 statusCode = 1;
+    string message = 2;
+    User data = 3;
+}
 
 message User {
     string id = 1;

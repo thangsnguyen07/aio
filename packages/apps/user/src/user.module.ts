@@ -1,18 +1,38 @@
-import { Module } from '@nestjs/common'
+import { Module, Provider } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { APP_INTERCEPTOR } from '@nestjs/core'
 import { CqrsModule } from '@nestjs/cqrs'
 
-import { TypeORMDatabaseModule } from '@libs/core'
+import { CoreModule, RequestContextService, TypeORMDatabaseModule } from '@libs/core'
 
 import { get } from 'env-var'
 import * as path from 'path'
 
+import { commandHandlers } from './application/commands'
+import { InjectionToken } from './application/injection-token'
+import { queryHandlers } from './application/queries'
+
 import { UserEntity } from './infrastructure/entities/user.entity'
+import { UserRepository } from './infrastructure/repositories/user.repository'
+
 import { UserController } from './presentation/user.controller'
-import { UserService } from './user.service'
+
+const providers: Provider[] = [
+  {
+    provide: APP_INTERCEPTOR,
+    useClass: RequestContextService,
+  },
+  {
+    provide: InjectionToken.USER_REPOSITORY,
+    useClass: UserRepository,
+  },
+]
+
+const application = [...queryHandlers, ...commandHandlers]
 
 @Module({
   imports: [
+    CoreModule,
     ConfigModule.forRoot({
       envFilePath: [path.resolve(__dirname, `../.env.${process.env.NODE_ENV}`), '.env'],
       isGlobal: true,
@@ -32,6 +52,6 @@ import { UserService } from './user.service'
     }),
   ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [...providers, ...application],
 })
 export class UserModule {}

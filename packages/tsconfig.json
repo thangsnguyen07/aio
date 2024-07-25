@@ -23,6 +23,12 @@
       ],
       "@libs/core/*": [
         "libs/core/src/*"
+      ],
+      "@libs/proto": [
+        "libs/proto/src"
+      ],
+      "@libs/proto/*": [
+        "libs/proto/src/*"
       ]
     }
   }

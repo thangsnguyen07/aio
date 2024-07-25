@@ -1,16 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common'
-import { ClientGrpc, ClientKafka, RpcException } from '@nestjs/microservices'
+import { ClientGrpc, RpcException } from '@nestjs/microservices'
 
 import { USER_SERVICE_NAME, UserServiceClient } from '@libs/proto'
 
 import { randomUUID } from 'crypto'
-import { catchError, lastValueFrom, throwError } from 'rxjs'
+import { catchError, throwError } from 'rxjs'
 
 import { CreateUserRequestDTO } from './dtos/create-user-request.dto'
 import { FindUserByIdRequestDto } from './dtos/find-user-by-id-request.dto'
-import { CreateUserEvent } from './events/create-user.event'
-
-// import { FindUserByIdEvent } from './events/find-user-by-id.event'
 
 class EventPayload<T> {
   public readonly requestId = randomUUID()

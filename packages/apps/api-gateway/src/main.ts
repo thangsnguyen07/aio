@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core'
 
 import { AppModule } from './app.module'
-import { RpcExceptionFilter } from './filters/rpc-exception-filter/rpc-exception-filter.filter'
+import { RpcExceptionFilter } from './filters/rpc-exception.filter'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)

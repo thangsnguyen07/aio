@@ -43,8 +43,8 @@ export abstract class ExceptionBase extends Error {
   ) {
     super(message)
     Error.captureStackTrace(this, this.constructor)
-    const ctx = RequestContextService.getContext()
-    this.correlationId = ctx.requestId
+    // const ctx = RequestContextService.getContext()
+    // this.correlationId = ctx.requestId
   }
 
   /**

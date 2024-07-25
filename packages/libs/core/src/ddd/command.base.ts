@@ -46,7 +46,8 @@ export class Command {
 
     this.id = props.id || randomUUID()
     this.metadata = {
-      correlationId: props?.metadata?.correlationId || RequestContextService.getContext().requestId,
+      // correlationId: props?.metadata?.correlationId || RequestContextService.getContext().requestId,
+      correlationId: props?.metadata?.correlationId,
       causationId: props?.metadata?.causationId,
       timestamp: props?.metadata?.timestamp || Date.now(),
       userId: props?.metadata?.userId,

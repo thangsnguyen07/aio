@@ -13,10 +13,18 @@
     "api-gateway": {
       "type": "application",
       "root": "apps/api-gateway",
-      "entryFile": "main",
-      "sourceRoot": "apps/api-gateway/src",
+      "entryFile": "src/main",
+      "sourceRoot": "./",
       "compilerOptions": {
-        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json",
+        "assets": [
+          {
+            "include": "proto",
+            "outDir": "dist/apps/api-gateway/proto",
+            "watchAssets": true
+          }
+        ],
+        "watchAssets": true
       }
     },
     "todo": {
@@ -44,8 +52,23 @@
       "sourceRoot": "./",
       "compilerOptions": {
         "tsConfigPath": "apps/user/tsconfig.app.json",
-        "assets": ["proto"],
+        "assets": [
+          {
+            "include": "proto",
+            "outDir": "dist/apps/user/proto",
+            "watchAssets": true
+          }
+        ],
         "watchAssets": true
+      }
+    },
+    "proto": {
+      "type": "library",
+      "root": "libs/proto",
+      "entryFile": "index",
+      "sourceRoot": "libs/proto/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/proto/tsconfig.lib.json"
       }
     }
   }

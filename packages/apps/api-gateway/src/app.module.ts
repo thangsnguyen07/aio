@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common'
 
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
+import { RequestContextModule } from 'nestjs-request-context'
+
+import { UserModule } from './modules/user/user.module'
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [RequestContextModule, UserModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

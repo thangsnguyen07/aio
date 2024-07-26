@@ -70,6 +70,23 @@
       "compilerOptions": {
         "tsConfigPath": "libs/proto/tsconfig.lib.json"
       }
+    },
+    "auth": {
+      "type": "application",
+      "root": "apps/auth",
+      "entryFile": "src/main",
+      "sourceRoot": "./",
+      "compilerOptions": {
+        "tsConfigPath": "apps/auth/tsconfig.app.json",
+        "assets": [
+          {
+            "include": "proto",
+            "outDir": "dist/apps/auth/proto",
+            "watchAssets": true
+          }
+        ],
+        "watchAssets": true
+      }
     }
   }
 }

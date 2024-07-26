@@ -7,6 +7,7 @@ import { SuccessResponseDto } from '@libs/core/shared/presentation/dtos/response
 import { status } from '@grpc/grpc-js'
 import { User } from 'apps/user/src/domain/user.model'
 import { UserRepositoryPort } from 'apps/user/src/domain/user.repository.port'
+import * as bcrypt from 'bcrypt'
 
 import { InjectionToken } from '../../injection-token'
 import { CreateUserCommand } from './create-user.command'
@@ -28,7 +29,9 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
       })
     }
 
-    const user = User.create({ email, password })
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const user = User.create({ email, password: hashedPassword })
 
     await this.repository.save(user)
 

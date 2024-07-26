@@ -39,6 +39,11 @@ export interface UpdateUserDto {
   password: string
 }
 
+export interface ValidateUserDto {
+  email: string
+  password: string
+}
+
 export const USER_PACKAGE_NAME = 'user'
 
 export interface UserServiceClient {
@@ -49,6 +54,8 @@ export interface UserServiceClient {
   updateUser(request: UpdateUserDto): Observable<ResponseDto>
 
   queryUsers(request: Observable<PaginationDto>): Observable<Users>
+
+  validateUser(request: ValidateUserDto): Observable<ResponseDto>
 }
 
 export interface UserServiceController {
@@ -65,7 +72,7 @@ export interface UserServiceController {
 
 export function UserServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ['createUser', 'findOneUser', 'updateUser']
+    const grpcMethods: string[] = ['createUser', 'findOneUser', 'updateUser', 'validateUser']
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method)
       GrpcMethod('UserService', method)(constructor.prototype[method], method, descriptor)

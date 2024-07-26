@@ -7,6 +7,7 @@ service UserService {
     rpc FindOneUser (FindUserByIdDto) returns (ResponseDto) {}
     rpc UpdateUser (UpdateUserDto) returns (ResponseDto) {}
     rpc QueryUsers (stream PaginationDto) returns (stream Users) {}
+    rpc ValidateUser (ValidateUserDto) returns (ResponseDto) {}
 }
 
 message PaginationDto {
@@ -19,6 +20,7 @@ message ResponseDto {
     int32 statusCode = 1;
     string message = 2;
     User data = 3;
+    bool success = 4;
 }
 
 message User {
@@ -41,6 +43,11 @@ message FindUserByIdDto {
 
 message UpdateUserDto {
     string id = 1;
+    string password = 2;
+}
+
+message ValidateUserDto {
+    string email = 1;
     string password = 2;
 }
 

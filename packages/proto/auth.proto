@@ -1,0 +1,35 @@
+syntax="proto3";
+
+package auth;
+
+service AuthService {
+    rpc Login (LoginDto) returns (ResponseDto) {}
+    rpc Register (RegisterDto) returns (ResponseDto) {}
+}
+
+message ResponseDto {
+    int32 statusCode = 1;
+    string message = 2;
+    UserToken data = 3;
+    bool success = 4;
+}
+
+message UserToken {
+    string accessToken = 1;
+    string refreshToken = 2;
+}
+
+message LoginDto {
+    string email = 1;
+    string password = 2;
+}
+
+message RegisterDto {
+    string email = 1;
+    string password = 2;
+}
+
+message UpdateUserDto {
+    string id = 1;
+    string password = 2;
+}

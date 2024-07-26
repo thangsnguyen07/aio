@@ -1,5 +1,6 @@
 import { AggregateID, AggregateRoot } from '@libs/core'
 
+import * as bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
 
 import { UserEntity } from '../infrastructure/entities/user.entity'
@@ -20,6 +21,16 @@ export class User extends AggregateRoot<UserProps> {
     const { id, createdAt, updatedAt, deletedAt, version, ...props } = entity
 
     return new User({ id, props, createdAt, updatedAt, deletedAt, version })
+  }
+
+  /**
+   * Compare a given password with the stored password hash.
+   *
+   * @param {string} password - The password to compare.
+   * @return {Promise<boolean>} A promise that resolves to true if the passwords match, false otherwise.
+   */
+  async comparePassword(password: string): Promise<boolean> {
+    return await bcrypt.compare(password, this.props.password)
   }
 
   validate(): void {

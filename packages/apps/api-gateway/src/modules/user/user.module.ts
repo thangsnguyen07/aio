@@ -17,6 +17,7 @@ import { UserService } from './user.service'
         options: {
           package: USER_PACKAGE_NAME,
           protoPath: join(__dirname, '../proto/user.proto'),
+          url: 'localhost:5000',
         },
       },
     ]),

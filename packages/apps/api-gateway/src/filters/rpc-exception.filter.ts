@@ -19,6 +19,6 @@ export class RpcExceptionFilter implements ExceptionFilter {
     const httpStatus = mapper.grpcToHttpMapper(error.code)
     const errorType = HttpStatus[httpStatus]
 
-    response.status(httpStatus).json(new ErrorResponseDto(httpStatus, error.details, errorType))
+    response.status(httpStatus).json(new ErrorResponseDto(error.details, httpStatus, errorType))
   }
 }

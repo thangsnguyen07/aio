@@ -21,7 +21,7 @@ export class ErrorStatusMapper {
         break
 
       case GrpcStatus.INVALID_ARGUMENT:
-        httpStatus = HttpStatus.UNPROCESSABLE_ENTITY
+        httpStatus = HttpStatus.BAD_REQUEST
         break
 
       case GrpcStatus.DEADLINE_EXCEEDED:

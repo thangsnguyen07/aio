@@ -65,7 +65,7 @@ export class ErrorStatusMapper {
         break
 
       case GrpcStatus.UNAVAILABLE:
-        httpStatus = HttpStatus.NOT_FOUND
+        httpStatus = HttpStatus.SERVICE_UNAVAILABLE
         break
 
       case GrpcStatus.DATA_LOSS:

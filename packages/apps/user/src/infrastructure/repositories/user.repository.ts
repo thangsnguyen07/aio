@@ -4,7 +4,6 @@ import { Paginated, PaginatedQueryParams, readConnection, writeConnection } from
 
 import { User } from '../../domain/user.model'
 import { UserRepositoryPort } from '../../domain/user.repository.port'
-import { UserProps } from '../../domain/user.type'
 import { UserEntity } from '../entities/user.entity'
 
 export class UserRepository implements UserRepositoryPort {
@@ -17,6 +16,11 @@ export class UserRepository implements UserRepositoryPort {
 
   async findOneByEmail(email: string): Promise<User | null> {
     const entity = await readConnection.getRepository(UserEntity).findOneBy({ email })
+    return entity ? User.loadFromEntity(entity) : null
+  }
+
+  async findOneByUsername(username: string): Promise<User | null> {
+    const entity = await readConnection.getRepository(UserEntity).findOneBy({ username })
     return entity ? User.loadFromEntity(entity) : null
   }
 

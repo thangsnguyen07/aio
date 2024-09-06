@@ -33,6 +33,11 @@ export class User extends AggregateRoot<UserProps> {
     return await bcrypt.compare(password, this.props.password)
   }
 
+  async updatePassword(password: string): Promise<void> {
+    const hashedPassword = await bcrypt.hash(password, 10)
+    this.props.password = hashedPassword
+  }
+
   validate(): void {
     // entity business rules validation to protect it's invariant before saving entity to a database
   }

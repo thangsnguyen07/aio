@@ -1,13 +1,13 @@
 import { Command, CommandProps } from '@libs/core'
 
 export class CreateUserCommand extends Command {
-  readonly email: string
+  readonly username: string
   readonly password: string
 
   constructor(props: CommandProps<CreateUserCommand>) {
     super(props)
 
-    this.email = props.email
+    this.username = props.username
     this.password = props.password
   }
 }

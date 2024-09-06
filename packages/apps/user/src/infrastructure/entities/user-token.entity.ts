@@ -10,25 +10,20 @@ import {
   VersionColumn,
 } from 'typeorm'
 
-@Entity({ name: 'user_account' })
-export class UserEntity {
+import { UserEntity } from './user.entity'
+
+@Entity({ name: 'user_token' })
+export class UserTokenEntity {
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id: string
 
-  @Column({ name: 'username', unique: true })
-  username: string
+  @OneToOne(() => UserEntity, (user) => user.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  @Column({ name: 'user_id', unique: true })
+  userId: string
 
-  @Column({ name: 'email', unique: true, nullable: true })
-  email: string
-
-  @Column({ name: 'password' })
-  password: string
-
-  @Column({ name: 'is_verified', default: false })
-  isVerified: boolean
-
-  @Column({ name: 'is_active', default: true })
-  isActive: boolean
+  @Column({ name: 'refresh_token' })
+  refreshToken: string
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date

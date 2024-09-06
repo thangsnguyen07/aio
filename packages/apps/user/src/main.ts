@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 
@@ -13,10 +14,12 @@ async function bootstrap() {
     options: {
       package: USER_PACKAGE_NAME,
       protoPath: join(__dirname, '../proto/user.proto'),
-      url: 'localhost:5000',
+      url: '0.0.0.0:5000',
     },
   })
 
   await app.listen()
+
+  Logger.log('User microservice is running!')
 }
 bootstrap()

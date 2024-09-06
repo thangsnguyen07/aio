@@ -3,7 +3,7 @@ import { IsEmail, IsNotEmpty, IsString } from 'class-validator'
 export class CreateUserRequestDto {
   @IsEmail()
   @IsNotEmpty()
-  readonly email: string
+  readonly username: string
 
   @IsString()
   @IsNotEmpty()

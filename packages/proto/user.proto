@@ -3,51 +3,59 @@ syntax="proto3";
 package user;
 
 service UserService {
-    rpc CreateUser (CreateUserDto) returns (ResponseDto) {}
-    rpc FindOneUser (FindUserByIdDto) returns (ResponseDto) {}
-    rpc UpdateUser (UpdateUserDto) returns (ResponseDto) {}
-    rpc QueryUsers (stream PaginationDto) returns (stream Users) {}
-    rpc ValidateUser (ValidateUserDto) returns (ResponseDto) {}
+    rpc GetUser (GetUserRequest) returns (User) {}
+    rpc GetUserById (GetUserByIdRequest) returns (User) {}
+    rpc UpdateUserPassword (UpdateUserPasswordRequest) returns (User) {}
+    rpc ListUsers (PaginationRequest) returns (Users) {}
+    rpc ValidateUser (ValidateUserRequest) returns (ValidateUserResponse) {}
 }
 
-message PaginationDto {
+message PaginationRequest {
     int32 page = 1;
     int32 skip = 2;
     int32 limit = 3;
 }
 
-message ResponseDto {
-    int32 statusCode = 1;
-    string message = 2;
-    User data = 3;
-    bool success = 4;
+message BaseResponse {
+    string message = 1;
+    int32 statusCode = 2;
+    bool success = 3;
 }
 
 message User {
     string id = 1;
-    string email = 2;
+    string username = 2;
+    string email = 3;
 }
 
 message Users {
     repeated User users = 1;
 }
-
-message CreateUserDto {
-    string email = 1;
-    string password = 2;
+message GetUserRequest {
+    string username = 1;
 }
 
-message FindUserByIdDto {
+message GetUserByIdRequest {
     string id = 1;
 }
 
-message UpdateUserDto {
+message UpdateUserRequest {
     string id = 1;
     string password = 2;
 }
 
-message ValidateUserDto {
-    string email = 1;
+message UpdateUserPasswordRequest {
+    string userId = 1;
+    string currentPassword = 2;
+    string newPassword = 3;
+}
+
+message ValidateUserRequest {
+    string username = 1;
     string password = 2;
+}
+
+message ValidateUserResponse {
+    string id = 1;
 }
 

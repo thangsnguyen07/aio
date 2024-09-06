@@ -1,20 +1,19 @@
-import { Body, Controller, Logger, Param } from '@nestjs/common'
+import { Controller, Param } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { GrpcMethod } from '@nestjs/microservices'
 
 import {
   CreateUserRequest,
+  GetUserByIdRequest,
   UpdateUserPasswordRequest,
   UserServiceControllerMethods,
   ValidateUserRequest,
 } from '@libs/proto'
 
-import { Metadata, ServerUnaryCall } from '@grpc/grpc-js'
-
 import { CreateUserCommand } from '../application/commands/create-user/create-user.command'
 import { UpdateUserPasswordCommand } from '../application/commands/update-password/update-password.command'
 import { ValidateUserCommand } from '../application/commands/validate-user/validate-user.command'
-import { FindUserByIdQuery } from '../application/queries/find-user-by-id/find-user-by-id.query'
+import { GetUserByIdQuery } from '../application/queries/get-user-by-id/get-user-by-id.query'
 import { routesV1 } from '../configs/app.routes'
 import { FindUserByIdRequestDto } from './dtos/find-user-by-id/find-user-by-id.request.dto'
 
@@ -26,10 +25,9 @@ export class UserController {
     private readonly commandBus: CommandBus,
   ) {}
 
-  @GrpcMethod('UserService', 'findOneUser')
-  async findOneUser(@Body() body: FindUserByIdRequestDto) {
-    const query = new FindUserByIdQuery(body)
-
+  @GrpcMethod('UserService', 'getUserById')
+  async getUserById(data: GetUserByIdRequest) {
+    const query = new GetUserByIdQuery(data)
     return await this.queryBus.execute(query)
   }
 

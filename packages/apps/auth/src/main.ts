@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 
@@ -13,10 +14,12 @@ async function bootstrap() {
     options: {
       package: AUTH_PACKAGE_NAME,
       protoPath: join(__dirname, '../proto/auth.proto'),
-      url: 'localhost:5001',
+      url: '0.0.0.0:5001',
     },
   })
 
   await app.listen()
+
+  Logger.log('Auth microservice is running!')
 }
 bootstrap()

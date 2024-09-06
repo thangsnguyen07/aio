@@ -1,19 +1,35 @@
-import { Body, Controller, Get } from '@nestjs/common'
+import { Body, Controller, Logger, UseGuards } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { GrpcMethod } from '@nestjs/microservices'
 
-import { UserLoginCommand } from '../application/commands/user-login/user-login.command'
+import { SuccessResponseDto } from '@libs/core/shared/presentation/dtos/response.dto'
+
+import { GenerateTokenCommand } from '../application/commands/generate-token/generate-token.command'
+import { JwtAuthGuard } from '../application/guards/jwt-auth.guard'
 
 @Controller()
 export class AuthController {
+  private readonly logger = new Logger(AuthController.name)
   constructor(
     private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus,
   ) {}
 
-  @GrpcMethod('AuthService', 'login')
-  async login(@Body() body) {
-    const command = new UserLoginCommand(body)
+  @GrpcMethod('AuthService', 'generateToken')
+  async generateToken(@Body() body) {
+    this.logger.log(`Generating token: ${JSON.stringify(body)}`)
+
+    const command = new GenerateTokenCommand(body)
     return await this.commandBus.execute(command)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @GrpcMethod('AuthService', 'isTokenValid')
+  async verifyToken(@Body() body) {
+    this.logger.log(`Verifying token: ${JSON.stringify(body)}`)
+
+    return new SuccessResponseDto({
+      accessToken: body.token,
+    })
   }
 }

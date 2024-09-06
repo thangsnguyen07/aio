@@ -1,10 +1,10 @@
 import { Command, CommandProps } from '@libs/core'
 
-export class ValidateUserCommand extends Command {
+export class LoginCommand extends Command {
   readonly username: string
   readonly password: string
 
-  constructor(props: CommandProps<ValidateUserCommand>) {
+  constructor(props: CommandProps<LoginCommand>) {
     super(props)
 
     this.username = props.username

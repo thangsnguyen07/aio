@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 
-import { USER_PACKAGE_NAME, USER_SERVICE_NAME } from '@libs/proto'
+import { AUTH_PACKAGE_NAME, AUTH_SERVICE_NAME } from '@libs/proto/types/auth'
+import { USER_PACKAGE_NAME, USER_SERVICE_NAME } from '@libs/proto/types/user'
 
 import { join } from 'path'
 
@@ -17,7 +18,16 @@ import { UserService } from './user.service'
         options: {
           package: USER_PACKAGE_NAME,
           protoPath: join(__dirname, '../proto/user.proto'),
-          url: 'localhost:5000',
+          url: '0.0.0.0:5000',
+        },
+      },
+      {
+        name: AUTH_SERVICE_NAME,
+        transport: Transport.GRPC,
+        options: {
+          package: AUTH_PACKAGE_NAME,
+          protoPath: join(__dirname, '../proto/auth.proto'),
+          url: '0.0.0.0:5001',
         },
       },
     ]),

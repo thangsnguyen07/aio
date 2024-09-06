@@ -7,7 +7,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices'
 
 import { CoreModule } from '@libs/core'
 import { GrpcLoggingInterceptor } from '@libs/core/application/interceptors/grpc-logging.interceptor'
-import { USER_PACKAGE_NAME, USER_SERVICE_NAME } from '@libs/proto'
+import { USER_PACKAGE_NAME, USER_SERVICE_NAME } from '@libs/proto/types/user'
 
 import { join } from 'path'
 

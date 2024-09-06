@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 
-import { USER_PACKAGE_NAME, USER_SERVICE_NAME } from '@libs/proto'
 import { AUTH_PACKAGE_NAME, AUTH_SERVICE_NAME } from '@libs/proto/types/auth'
 
 import { join } from 'path'

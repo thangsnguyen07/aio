@@ -8,7 +8,7 @@ import {
   UpdateUserPasswordRequest,
   UserServiceControllerMethods,
   ValidateUserRequest,
-} from '@libs/proto'
+} from '@libs/proto/types/user'
 
 import { CreateUserCommand } from '../application/commands/create-user/create-user.command'
 import { UpdateUserPasswordCommand } from '../application/commands/update-password/update-password.command'

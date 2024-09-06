@@ -3,7 +3,7 @@ import { IsEmail, IsString } from 'class-validator'
 export class CreateUserRequestDTO {
   @IsEmail()
   @IsString()
-  email: string
+  username: string
 
   @IsString()
   password: string

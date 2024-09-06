@@ -2,7 +2,7 @@ import { Inject } from '@nestjs/common'
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs'
 import { RpcException } from '@nestjs/microservices'
 
-import { User as GetUserByIdResponse } from '@libs/proto'
+import { User as GetUserByIdResponse } from '@libs/proto/types/user'
 
 import { status } from '@grpc/grpc-js'
 import { UserRepositoryPort } from 'apps/user/src/domain/user.repository.port'

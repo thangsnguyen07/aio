@@ -2,7 +2,7 @@ import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 
-import { USER_PACKAGE_NAME } from '@libs/proto'
+import { USER_PACKAGE_NAME } from '@libs/proto/types/user'
 
 import { join } from 'path'
 

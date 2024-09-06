@@ -1,29 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { ClientGrpc, RpcException } from '@nestjs/microservices'
 
-import { USER_SERVICE_NAME, UserServiceClient } from '@libs/proto'
+import { SuccessResponseDto } from '@libs/core/shared/presentation/dtos/response.dto'
+import { USER_SERVICE_NAME, UserServiceClient } from '@libs/proto/types/user'
 
-import { randomUUID } from 'crypto'
-import { catchError, throwError } from 'rxjs'
+import { catchError, map, throwError } from 'rxjs'
 
-import { CreateUserRequestDTO } from './dtos/create-user-request.dto'
-import { FindUserByIdRequestDto } from './dtos/find-user-by-id-request.dto'
-
-class EventPayload<T> {
-  public readonly requestId = randomUUID()
-  public readonly data: T
-
-  constructor(data: T) {
-    this.data = data
-  }
-
-  toString() {
-    return JSON.stringify({
-      requestId: this.requestId,
-      data: this.data,
-    })
-  }
-}
+import { GetUserByIdRequestDto } from './dtos/get-user-by-id-request.dto'
 
 @Injectable()
 export class UserService {
@@ -34,15 +17,10 @@ export class UserService {
     this.userClient = this.client.getService<UserServiceClient>(USER_SERVICE_NAME)
   }
 
-  createUser(payload: CreateUserRequestDTO) {
+  getUserById(payload: GetUserByIdRequestDto) {
     return this.userClient
-      .createUser(payload)
-      .pipe(catchError((error) => throwError(() => new RpcException(error))))
-  }
-
-  findUserById(payload: FindUserByIdRequestDto) {
-    return this.userClient
-      .findOneUser(payload)
+      .getUserById(payload)
+      .pipe(map((res) => new SuccessResponseDto(res, 200, 'User retrieved successfully')))
       .pipe(catchError((error) => throwError(() => new RpcException(error))))
   }
 }

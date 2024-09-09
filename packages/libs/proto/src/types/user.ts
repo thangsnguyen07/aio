@@ -11,6 +11,12 @@ import { Observable } from 'rxjs'
 
 export const protobufPackage = 'user'
 
+export interface CreateUserRequest {
+  username: string
+  email: string
+  password: string
+}
+
 export interface PaginationRequest {
   page: number
   skip: number
@@ -64,6 +70,8 @@ export interface ValidateUserResponse {
 export const USER_PACKAGE_NAME = 'user'
 
 export interface UserServiceClient {
+  createUser(request: CreateUserRequest): Observable<User>
+
   getUser(request: GetUserRequest): Observable<User>
 
   getUserById(request: GetUserByIdRequest): Observable<User>
@@ -76,6 +84,8 @@ export interface UserServiceClient {
 }
 
 export interface UserServiceController {
+  createUser(request: CreateUserRequest): Promise<User> | Observable<User> | User
+
   getUser(request: GetUserRequest): Promise<User> | Observable<User> | User
 
   getUserById(request: GetUserByIdRequest): Promise<User> | Observable<User> | User
@@ -92,6 +102,7 @@ export interface UserServiceController {
 export function UserServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = [
+      'createUser',
       'getUser',
       'getUserById',
       'updateUserPassword',

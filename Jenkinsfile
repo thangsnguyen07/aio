@@ -1,18 +1,11 @@
 pipeline {
-    agent { 
-        node {
-            label 'docker-agent-node'
-            }
-      }
-    triggers{
-        pollSCM 'H/2 * * * *'
-    }
+    agent any
     stages {
         stage('Build') {
             steps {
                 echo "Building.."
                 sh '''
-                echo "Doing build stuff..."
+                    npm install
                 '''
             }
         }

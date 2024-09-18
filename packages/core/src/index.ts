@@ -2,6 +2,7 @@
 export { RequestContextService } from './application/context/app-request.context'
 export { ContextInterceptor } from './application/interceptors/context.interceptor'
 export { ExceptionInterceptor } from './application/interceptors/exception.interceptor'
+export { GrpcLoggingInterceptor } from './application/interceptors/grpc-logging.interceptor'
 
 // database
 export * from './db/typeorm.database.module'

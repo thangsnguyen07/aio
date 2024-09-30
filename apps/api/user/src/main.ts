@@ -8,7 +8,7 @@ import { UserModule } from './user.module'
 
 config()
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(UserModule, {
     transport: Transport.GRPC,
     options: {

@@ -16,7 +16,7 @@ export class GetUserByIdQueryHandler
   constructor(
     @Inject(InjectionToken.USER_REPOSITORY) private readonly repository: UserRepositoryPort,
   ) {}
-  async execute(query: GetUserByIdQuery) {
+  async execute(query: GetUserByIdQuery): Promise<GetUserByIdResponse> {
     const { id } = query
 
     const user = await this.repository.findOneById(id)

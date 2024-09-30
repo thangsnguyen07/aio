@@ -16,27 +16,34 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand, Cre
   constructor(
     @Inject(InjectionToken.USER_REPOSITORY) private readonly repository: UserRepositoryPort,
   ) {}
+
   async execute(command: CreateUserCommand): Promise<CreateUserResponse> {
     const { username, password } = command
 
-    const isUserExist = await this.repository.findOneByUsername(username)
+    const user = await this.repository.findOneByUsername(username)
 
-    if (isUserExist) {
+    if (user) {
       throw new RpcException({
         code: status.ALREADY_EXISTS,
         message: 'User with this username already exists',
       })
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
+    const hashedPassword = await this.hashPassword(password)
 
-    const user = User.create({ username, password: hashedPassword })
-    await this.repository.save(user)
+    const newUser = User.create({ username, password: hashedPassword })
+    await this.repository.save(newUser)
 
     return {
-      id: user.id,
-      username: user.getProps().username,
-      email: user.getProps().email,
+      id: newUser.id,
+      username: newUser.getProps().username,
+      email: newUser.getProps().email,
     }
+  }
+
+  private readonly SALT_ROUNDS = 10
+
+  private async hashPassword(password: string): Promise<string> {
+    return bcrypt.hash(password, this.SALT_ROUNDS)
   }
 }

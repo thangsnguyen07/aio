@@ -8,6 +8,7 @@ import {
   UserServiceControllerMethods,
   ValidateUserRequest,
 } from 'proto'
+import { User } from 'proto'
 
 import { CreateUserCommand } from '../application/commands/create-user/create-user.command'
 import { UpdateUserPasswordCommand } from '../application/commands/update-password/update-password.command'
@@ -22,32 +23,32 @@ export class UserController {
   ) {}
 
   @GrpcMethod('UserService', 'getUserById')
-  async getUserById(data: GetUserByIdRequest) {
+  async getUserById(data: GetUserByIdRequest): Promise<User> {
     const query = new GetUserByIdQuery(data)
-    return await this.queryBus.execute(query)
+    return await this.queryBus.execute<GetUserByIdQuery, User>(query)
   }
 
-  async updateUser() {}
+  async updateUser(): Promise<void> {}
 
-  async listUsers() {}
+  async listUsers(): Promise<void> {}
 
-  async getUser() {}
+  async getUser(): Promise<void> {}
 
   @GrpcMethod('UserService', 'createUser')
-  async createUser(data: CreateUserRequest) {
+  async createUser(data: CreateUserRequest): Promise<User> {
     const command = new CreateUserCommand(data)
-    return await this.commandBus.execute(command)
+    return await this.commandBus.execute<CreateUserCommand, User>(command)
   }
 
   @GrpcMethod('UserService', 'validateUser')
-  async validateUser(data: ValidateUserRequest) {
+  async validateUser(data: ValidateUserRequest): Promise<User> {
     const command = new ValidateUserCommand(data)
-    return await this.commandBus.execute(command)
+    return await this.commandBus.execute<ValidateUserCommand, User>(command)
   }
 
   @GrpcMethod('UserService', 'updateUserPassword')
-  async updateUserPassword(data: UpdateUserPasswordRequest) {
+  async updateUserPassword(data: UpdateUserPasswordRequest): Promise<User> {
     const command = new UpdateUserPasswordCommand(data)
-    return await this.commandBus.execute(command)
+    return await this.commandBus.execute<UpdateUserPasswordCommand, User>(command)
   }
 }

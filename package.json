@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pre-commit": "npx nx run-many --target=pre-commit --all --parallel",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
@@ -12,8 +13,8 @@
     "@nx/eslint": "19.7.3",
     "@nx/jest": "19.7.3",
     "eslint": "~8.57.0",
+    "husky": "^9.1.6",
     "jest": "^29.7.0",
     "nx": "19.7.3"
-  },
-  "dependencies": {}
+  }
 }

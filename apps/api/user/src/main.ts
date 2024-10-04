@@ -14,7 +14,7 @@ async function bootstrap(): Promise<void> {
     options: {
       package: 'user',
       protoPath: 'node_modules/proto/user.proto',
-      url: '0.0.0.0:5000',
+      url: '0.0.0.0:5001',
     },
   })
 

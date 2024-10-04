@@ -17,9 +17,9 @@ export class User extends AggregateRoot<UserProps> {
   }
 
   static loadFromEntity(entity: UserEntity): User {
-    const { id, createdAt, updatedAt, deletedAt, version, ...props } = entity
+    const { id, createdAt, updatedAt, deletedAt, ...props } = entity
 
-    return new User({ id, props, createdAt, updatedAt, deletedAt, version })
+    return new User({ id, props, createdAt, updatedAt, deletedAt })
   }
 
   /**

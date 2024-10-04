@@ -12,7 +12,7 @@ import { commandHandlers } from './application/commands'
 import { InjectionToken } from './application/injection-token'
 import { queryHandlers } from './application/queries'
 
-import { UserTokenRepository } from './infrastructure/repositories/user-token.repository'
+import { UserEntity } from './infrastructure/entities/user.entity'
 import { UserRepository } from './infrastructure/repositories/user.repository'
 
 import { UserController } from './presentation/user.controller'
@@ -27,10 +27,6 @@ const providers: Provider[] = [
   {
     provide: InjectionToken.USER_REPOSITORY,
     useClass: UserRepository,
-  },
-  {
-    provide: InjectionToken.USER_TOKEN_REPOSITORY,
-    useClass: UserTokenRepository,
   },
 ]
 
@@ -55,6 +51,7 @@ const application = [...queryHandlers, ...commandHandlers]
         },
       },
     ]),
+    TypeOrmModule.forFeature([UserEntity]),
     TypeOrmModule.forRoot(dataSourceOptions),
   ],
   controllers: [UserController],

@@ -4,7 +4,7 @@ package auth;
 
 service AuthService {
     rpc IsTokenValid (TokenRequest) returns (ResponseDto) {}
-    rpc GenerateToken (Payload) returns (Token) {}
+    rpc GenerateToken (GenerateTokenRequest) returns (Token) {}
     rpc Login(LoginRequest) returns (Token) {}
     rpc Register(RegisterRequest) returns (Token) {}
 }
@@ -24,7 +24,7 @@ message ResponseDto {
     bool success = 1;
 }
 
-message Payload {
+message GenerateTokenRequest {
     string userId = 1;
     string username = 2;
 }

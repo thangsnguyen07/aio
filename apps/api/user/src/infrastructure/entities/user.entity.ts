@@ -5,7 +5,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  VersionColumn,
 } from 'typeorm'
 
 @Entity({ name: 'user_account' })
@@ -36,7 +35,4 @@ export class UserEntity {
 
   @DeleteDateColumn({ name: 'deleted_at', nullable: true })
   deletedAt: Date | null
-
-  @VersionColumn()
-  version: number
 }

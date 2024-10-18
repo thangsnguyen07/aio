@@ -18,7 +18,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand, Cre
   ) {}
 
   async execute(command: CreateUserCommand): Promise<CreateUserResponse> {
-    const { username, password } = command
+    const { username, email, password } = command
 
     const user = await this.repository.findOneByUsername(username)
 
@@ -31,7 +31,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand, Cre
 
     const hashedPassword = await this.hashPassword(password)
 
-    const newUser = User.create({ username, password: hashedPassword })
+    const newUser = User.create({ username, email, password: hashedPassword })
     await this.repository.save(newUser)
 
     return {

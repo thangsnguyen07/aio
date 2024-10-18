@@ -23,7 +23,7 @@ export interface ResponseDto {
   success: boolean;
 }
 
-export interface Payload {
+export interface GenerateTokenRequest {
   userId: string;
   username: string;
 }
@@ -40,7 +40,7 @@ export interface TokenRequest {
 export interface AuthServiceClient {
   isTokenValid(request: TokenRequest): Observable<ResponseDto>;
 
-  generateToken(request: Payload): Observable<Token>;
+  generateToken(request: GenerateTokenRequest): Observable<Token>;
 
   login(request: LoginRequest): Observable<Token>;
 
@@ -50,7 +50,7 @@ export interface AuthServiceClient {
 export interface AuthServiceController {
   isTokenValid(request: TokenRequest): Promise<ResponseDto> | Observable<ResponseDto> | ResponseDto;
 
-  generateToken(request: Payload): Promise<Token> | Observable<Token> | Token;
+  generateToken(request: GenerateTokenRequest): Promise<Token> | Observable<Token> | Token;
 
   login(request: LoginRequest): Promise<Token> | Observable<Token> | Token;
 

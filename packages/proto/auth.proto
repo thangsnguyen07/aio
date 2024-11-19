@@ -4,9 +4,10 @@ package auth;
 
 service AuthService {
     rpc IsTokenValid (TokenRequest) returns (ResponseDto) {}
-    rpc GenerateToken (GenerateTokenRequest) returns (Token) {}
+    rpc GenerateAccessToken (GenerateAccessTokenRequest) returns (GenerateAccessTokenResponse) {}
     rpc Login(LoginRequest) returns (Token) {}
     rpc Register(RegisterRequest) returns (Token) {}
+    rpc Logout(TokenRequest) returns (ResponseDto) {}
 }
 
 message LoginRequest {
@@ -24,9 +25,12 @@ message ResponseDto {
     bool success = 1;
 }
 
-message GenerateTokenRequest {
-    string userId = 1;
-    string username = 2;
+message GenerateAccessTokenRequest {
+    string refreshToken = 1;
+}
+
+message GenerateAccessTokenResponse {
+    string accessToken = 1;
 }
     
 message Token {
@@ -35,6 +39,6 @@ message Token {
 }
 
 message TokenRequest {
-    string token = 1;
+    string accessToken = 1;
 }
 

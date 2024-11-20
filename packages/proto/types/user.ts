@@ -5,6 +5,7 @@
 // source: user.proto
 
 /* eslint-disable */
+import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 
@@ -65,32 +66,33 @@ export interface ValidateUserResponse {
 }
 
 export interface UserServiceClient {
-  createUser(request: CreateUserRequest): Observable<User>;
+  createUser(request: CreateUserRequest, metadata?: Metadata): Observable<User>;
 
-  getUser(request: GetUserRequest): Observable<User>;
+  getUser(request: GetUserRequest, metadata?: Metadata): Observable<User>;
 
-  getUserById(request: GetUserByIdRequest): Observable<User>;
+  getUserById(request: GetUserByIdRequest, metadata?: Metadata): Observable<User>;
 
-  updateUserPassword(request: UpdateUserPasswordRequest): Observable<User>;
+  updateUserPassword(request: UpdateUserPasswordRequest, metadata?: Metadata): Observable<User>;
 
-  listUsers(request: PaginationRequest): Observable<Users>;
+  listUsers(request: PaginationRequest, metadata?: Metadata): Observable<Users>;
 
-  validateUser(request: ValidateUserRequest): Observable<ValidateUserResponse>;
+  validateUser(request: ValidateUserRequest, metadata?: Metadata): Observable<ValidateUserResponse>;
 }
 
 export interface UserServiceController {
-  createUser(request: CreateUserRequest): Promise<User> | Observable<User> | User;
+  createUser(request: CreateUserRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
 
-  getUser(request: GetUserRequest): Promise<User> | Observable<User> | User;
+  getUser(request: GetUserRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
 
-  getUserById(request: GetUserByIdRequest): Promise<User> | Observable<User> | User;
+  getUserById(request: GetUserByIdRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
 
-  updateUserPassword(request: UpdateUserPasswordRequest): Promise<User> | Observable<User> | User;
+  updateUserPassword(request: UpdateUserPasswordRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
 
-  listUsers(request: PaginationRequest): Promise<Users> | Observable<Users> | Users;
+  listUsers(request: PaginationRequest, metadata?: Metadata): Promise<Users> | Observable<Users> | Users;
 
   validateUser(
     request: ValidateUserRequest,
+    metadata?: Metadata,
   ): Promise<ValidateUserResponse> | Observable<ValidateUserResponse> | ValidateUserResponse;
 }
 

@@ -5,6 +5,7 @@
 // source: auth.proto
 
 /* eslint-disable */
+import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 
@@ -41,29 +42,36 @@ export interface TokenRequest {
 }
 
 export interface AuthServiceClient {
-  isTokenValid(request: TokenRequest): Observable<ResponseDto>;
-
-  generateAccessToken(request: GenerateAccessTokenRequest): Observable<GenerateAccessTokenResponse>;
-
-  login(request: LoginRequest): Observable<Token>;
-
-  register(request: RegisterRequest): Observable<Token>;
-
-  logout(request: TokenRequest): Observable<ResponseDto>;
-}
-
-export interface AuthServiceController {
-  isTokenValid(request: TokenRequest): Promise<ResponseDto> | Observable<ResponseDto> | ResponseDto;
+  isTokenValid(request: TokenRequest, metadata?: Metadata): Observable<ResponseDto>;
 
   generateAccessToken(
     request: GenerateAccessTokenRequest,
+    metadata?: Metadata,
+  ): Observable<GenerateAccessTokenResponse>;
+
+  login(request: LoginRequest, metadata?: Metadata): Observable<Token>;
+
+  register(request: RegisterRequest, metadata?: Metadata): Observable<Token>;
+
+  logout(request: TokenRequest, metadata?: Metadata): Observable<ResponseDto>;
+}
+
+export interface AuthServiceController {
+  isTokenValid(
+    request: TokenRequest,
+    metadata?: Metadata,
+  ): Promise<ResponseDto> | Observable<ResponseDto> | ResponseDto;
+
+  generateAccessToken(
+    request: GenerateAccessTokenRequest,
+    metadata?: Metadata,
   ): Promise<GenerateAccessTokenResponse> | Observable<GenerateAccessTokenResponse> | GenerateAccessTokenResponse;
 
-  login(request: LoginRequest): Promise<Token> | Observable<Token> | Token;
+  login(request: LoginRequest, metadata?: Metadata): Promise<Token> | Observable<Token> | Token;
 
-  register(request: RegisterRequest): Promise<Token> | Observable<Token> | Token;
+  register(request: RegisterRequest, metadata?: Metadata): Promise<Token> | Observable<Token> | Token;
 
-  logout(request: TokenRequest): Promise<ResponseDto> | Observable<ResponseDto> | ResponseDto;
+  logout(request: TokenRequest, metadata?: Metadata): Promise<ResponseDto> | Observable<ResponseDto> | ResponseDto;
 }
 
 export function AuthServiceControllerMethods() {

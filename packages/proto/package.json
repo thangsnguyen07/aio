@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "rm -rf dist && tsc && cp *.proto dist",
-    "proto:generate": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd --ts_proto_out=./types --ts_proto_opt=nestJs=true ./*.proto --ts_proto_opt=exportCommonSymbols=false",
+    "proto:generate": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd --ts_proto_out=./types --ts_proto_opt=nestJs=true,exportCommonSymbols=false,addGrpcMetadata=true, ./*.proto",
     "proto:watch": "chokidar \"*.proto\" -c \"npm run proto:generate & npm run build\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

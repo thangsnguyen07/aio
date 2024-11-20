@@ -5,6 +5,7 @@
 // source: todo.proto
 
 /* eslint-disable */
+import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 import { Timestamp } from "./google/protobuf/timestamp";
@@ -49,23 +50,23 @@ export interface Todo {
 }
 
 export interface TodoServiceClient {
-  createTodo(request: CreateTodoDto): Observable<Todo>;
+  createTodo(request: CreateTodoDto, metadata?: Metadata): Observable<Todo>;
 
-  findOneTodo(request: FindTodoByIdDto): Observable<Todo>;
+  findOneTodo(request: FindTodoByIdDto, metadata?: Metadata): Observable<Todo>;
 
-  updateTodo(request: UpdateTodoDto): Observable<Todo>;
+  updateTodo(request: UpdateTodoDto, metadata?: Metadata): Observable<Todo>;
 
-  queryTodos(request: Observable<PaginationDto>): Observable<Todos>;
+  queryTodos(request: Observable<PaginationDto>, metadata?: Metadata): Observable<Todos>;
 }
 
 export interface TodoServiceController {
-  createTodo(request: CreateTodoDto): Promise<Todo> | Observable<Todo> | Todo;
+  createTodo(request: CreateTodoDto, metadata?: Metadata): Promise<Todo> | Observable<Todo> | Todo;
 
-  findOneTodo(request: FindTodoByIdDto): Promise<Todo> | Observable<Todo> | Todo;
+  findOneTodo(request: FindTodoByIdDto, metadata?: Metadata): Promise<Todo> | Observable<Todo> | Todo;
 
-  updateTodo(request: UpdateTodoDto): Promise<Todo> | Observable<Todo> | Todo;
+  updateTodo(request: UpdateTodoDto, metadata?: Metadata): Promise<Todo> | Observable<Todo> | Todo;
 
-  queryTodos(request: Observable<PaginationDto>): Observable<Todos>;
+  queryTodos(request: Observable<PaginationDto>, metadata?: Metadata): Observable<Todos>;
 }
 
 export function TodoServiceControllerMethods() {

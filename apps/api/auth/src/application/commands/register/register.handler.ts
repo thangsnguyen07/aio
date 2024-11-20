@@ -1,9 +1,12 @@
 import { Inject } from '@nestjs/common'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
+import { EventEmitter2 } from '@nestjs/event-emitter'
 import { ClientGrpc } from '@nestjs/microservices'
 
 import { Token, USER_SERVICE_NAME, UserServiceClient } from 'proto'
 import { lastValueFrom } from 'rxjs'
+
+import { UserRegisterDomainEvent } from '@/domain/events/user-register.event'
 
 import { AuthService } from '@/application/auth.service'
 import { InjectionToken } from '@/application/injection-token'
@@ -17,6 +20,7 @@ export class RegisterCommandHandler implements ICommandHandler<RegisterCommand, 
   constructor(
     @Inject(USER_SERVICE_NAME) private readonly client: ClientGrpc,
     @Inject(InjectionToken.AUTH_SERVICE) private readonly authService: AuthService,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   async execute(command: RegisterCommand): Promise<any> {
@@ -30,7 +34,17 @@ export class RegisterCommandHandler implements ICommandHandler<RegisterCommand, 
         return
       }
 
-      return await this.authService.generateToken(user.id, user.username)
+      const token = await this.authService.generateToken(user.id)
+
+      this.eventEmitter.emit(
+        UserRegisterDomainEvent.eventName,
+        new UserRegisterDomainEvent({
+          userId: user.id,
+          refreshToken: token.refreshToken,
+        }),
+      )
+
+      return token
     } catch (error) {
       throw error
     }

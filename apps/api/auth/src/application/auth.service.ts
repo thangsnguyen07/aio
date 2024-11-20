@@ -31,17 +31,17 @@ export class AuthService {
     }
   }
 
-  async generateToken(userId: string, username: string): Promise<Token> {
+  async generateToken(userId: string): Promise<Token> {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
-        { sub: userId, username },
+        { sub: userId },
         {
           secret: this.configService.get('JWT_ACCESS_SECRET'),
           expiresIn: '1d',
         },
       ),
       this.jwtService.signAsync(
-        { sub: userId, username },
+        { sub: userId },
         {
           secret: this.configService.get('JWT_REFRESH_SECRET'),
           expiresIn: '7d',

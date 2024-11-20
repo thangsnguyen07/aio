@@ -1,3 +1,5 @@
+export * from './api'
+
 // application
 export { RequestContextService } from './application/context/app-request.context'
 export { ContextInterceptor } from './application/interceptors/context.interceptor'
@@ -16,6 +18,7 @@ export * from './ddd/domain-event.base'
 export * from './ddd/model.base'
 export * from './ddd/query.base'
 export * from './ddd/repository.port'
+export * from './ddd/mapper.interface'
 
 // exceptions
 export * from './exceptions'

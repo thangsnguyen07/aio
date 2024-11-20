@@ -2,19 +2,28 @@ import { Module, Provider } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_INTERCEPTOR } from '@nestjs/core'
 import { CqrsModule } from '@nestjs/cqrs'
+import { EventEmitterModule } from '@nestjs/event-emitter'
 import { JwtModule } from '@nestjs/jwt'
 import { ClientsModule, Transport } from '@nestjs/microservices'
+import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { CoreModule, GrpcLoggingInterceptor } from 'core'
 import { USER_SERVICE_NAME } from 'proto'
 
 import { AuthService } from './application/auth.service'
 import { commandHandlers } from './application/commands'
+import { eventHandlers } from './application/event-handlers'
 import { InjectionToken } from './application/injection-token'
+
+import { UserTokenEntity } from './infrastructure/entities/user-token.entity'
+import { UserTokenRepository } from './infrastructure/repositories/user-token.repository'
 
 import { AuthController } from './presentation/auth.controller'
 
-const application = [...commandHandlers]
+import { dataSourceOptions } from './configs/typeorm.config'
+import { UserTokenMapper } from './user-token.mapper'
+
+const application = [...commandHandlers, ...eventHandlers]
 
 const providers: Provider[] = [
   {
@@ -24,6 +33,10 @@ const providers: Provider[] = [
   {
     provide: InjectionToken.AUTH_SERVICE,
     useClass: AuthService,
+  },
+  {
+    provide: InjectionToken.USER_TOKEN_REPOSITORY,
+    useClass: UserTokenRepository,
   },
 ]
 
@@ -49,6 +62,9 @@ const providers: Provider[] = [
       }),
       inject: [ConfigService],
     }),
+    TypeOrmModule.forFeature([UserTokenEntity]),
+    TypeOrmModule.forRoot(dataSourceOptions),
+    EventEmitterModule.forRoot(),
     ClientsModule.register([
       {
         name: USER_SERVICE_NAME,
@@ -63,6 +79,6 @@ const providers: Provider[] = [
     ]),
   ],
   controllers: [AuthController],
-  providers: [...application, ...providers],
+  providers: [...application, ...providers, UserTokenMapper],
 })
 export class AuthModule {}

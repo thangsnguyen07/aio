@@ -4,6 +4,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core'
 import { CqrsModule } from '@nestjs/cqrs'
 import { JwtModule } from '@nestjs/jwt'
 import { ClientsModule, Transport } from '@nestjs/microservices'
+import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { CoreModule, GrpcLoggingInterceptor } from 'core'
 import { USER_SERVICE_NAME } from 'proto'
@@ -12,7 +13,12 @@ import { AuthService } from './application/auth.service'
 import { commandHandlers } from './application/commands'
 import { InjectionToken } from './application/injection-token'
 
+import { UserTokenEntity } from './infrastructure/entities/user-token.entity'
+import { UserTokenRepository } from './infrastructure/repositories/user-token.repository'
+
 import { AuthController } from './presentation/auth.controller'
+
+import { dataSourceOptions } from './configs/typeorm.config'
 
 const application = [...commandHandlers]
 
@@ -24,6 +30,10 @@ const providers: Provider[] = [
   {
     provide: InjectionToken.AUTH_SERVICE,
     useClass: AuthService,
+  },
+  {
+    provide: InjectionToken.USER_TOKEN_REPOSITORY,
+    useClass: UserTokenRepository,
   },
 ]
 
@@ -49,6 +59,8 @@ const providers: Provider[] = [
       }),
       inject: [ConfigService],
     }),
+    TypeOrmModule.forFeature([UserTokenEntity]),
+    TypeOrmModule.forRoot(dataSourceOptions),
     ClientsModule.register([
       {
         name: USER_SERVICE_NAME,

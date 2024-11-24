@@ -1,0 +1,33 @@
+import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { JwtModule } from '@nestjs/jwt'
+import { ClientsModule, Transport } from '@nestjs/microservices'
+
+import { AUTH_SERVICE_NAME } from 'proto'
+
+import { AuthController } from './auth.controller'
+import { AuthService } from './auth.service'
+
+@Module({
+  imports: [
+    ConfigModule,
+    JwtModule,
+    ClientsModule.register([
+      {
+        name: AUTH_SERVICE_NAME,
+        transport: Transport.GRPC,
+        options: {
+          package: 'auth',
+          protoPath: 'node_modules/proto/auth.proto',
+          url: '0.0.0.0:5000',
+          loader: {
+            keepCase: true,
+          },
+        },
+      },
+    ]),
+  ],
+  controllers: [AuthController],
+  providers: [AuthService],
+})
+export class AuthModule {}

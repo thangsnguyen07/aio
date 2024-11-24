@@ -1,9 +1,9 @@
 import { Command, CommandProps } from 'core'
 
-export class GenerateAccessTokenCommand extends Command {
+export class LogoutCommand extends Command {
   readonly userId: string
 
-  constructor(props: CommandProps<GenerateAccessTokenCommand>) {
+  constructor(props: CommandProps<LogoutCommand>) {
     super(props)
 
     this.userId = props.userId

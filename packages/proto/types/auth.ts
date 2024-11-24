@@ -25,7 +25,11 @@ export interface ResponseDto {
 }
 
 export interface GenerateAccessTokenRequest {
-  refreshToken: string;
+  userId: string;
+}
+
+export interface LogoutRequest {
+  userId: string;
 }
 
 export interface GenerateAccessTokenResponse {
@@ -37,13 +41,7 @@ export interface Token {
   refreshToken: string;
 }
 
-export interface TokenRequest {
-  accessToken: string;
-}
-
 export interface AuthServiceClient {
-  isTokenValid(request: TokenRequest, metadata?: Metadata): Observable<ResponseDto>;
-
   generateAccessToken(
     request: GenerateAccessTokenRequest,
     metadata?: Metadata,
@@ -53,15 +51,10 @@ export interface AuthServiceClient {
 
   register(request: RegisterRequest, metadata?: Metadata): Observable<Token>;
 
-  logout(request: TokenRequest, metadata?: Metadata): Observable<ResponseDto>;
+  logout(request: LogoutRequest, metadata?: Metadata): Observable<ResponseDto>;
 }
 
 export interface AuthServiceController {
-  isTokenValid(
-    request: TokenRequest,
-    metadata?: Metadata,
-  ): Promise<ResponseDto> | Observable<ResponseDto> | ResponseDto;
-
   generateAccessToken(
     request: GenerateAccessTokenRequest,
     metadata?: Metadata,
@@ -71,12 +64,12 @@ export interface AuthServiceController {
 
   register(request: RegisterRequest, metadata?: Metadata): Promise<Token> | Observable<Token> | Token;
 
-  logout(request: TokenRequest, metadata?: Metadata): Promise<ResponseDto> | Observable<ResponseDto> | ResponseDto;
+  logout(request: LogoutRequest, metadata?: Metadata): Promise<ResponseDto> | Observable<ResponseDto> | ResponseDto;
 }
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["isTokenValid", "generateAccessToken", "login", "register", "logout"];
+    const grpcMethods: string[] = ["generateAccessToken", "login", "register", "logout"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);

@@ -1,41 +1,40 @@
-import { Body, Controller, Logger, UseGuards } from '@nestjs/common'
-import { CommandBus, QueryBus } from '@nestjs/cqrs'
+import { Controller, Logger } from '@nestjs/common'
+import { CommandBus } from '@nestjs/cqrs'
 import { GrpcMethod } from '@nestjs/microservices'
 
-import { GrpcGuard, SuccessResponseDto } from 'core'
-import { GenerateTokenRequest, LoginRequest, RegisterRequest, Token } from 'proto'
+import {
+  AuthServiceControllerMethods,
+  GenerateAccessTokenRequest,
+  GenerateAccessTokenResponse,
+  LoginRequest,
+  LogoutRequest,
+  RegisterRequest,
+  ResponseDto,
+  Token,
+} from 'proto'
 
+import { LogoutCommand } from '@/application/commands/logout/logout.command'
 import { RegisterCommand } from '@/application/commands/register/register.command'
 
-import { GenerateTokenCommand } from '../application/commands/generate-token/generate-token.command'
+import { GenerateAccessTokenCommand } from '../application/commands/generate-access-token/generate-access-token.command'
 import { LoginCommand } from '../application/commands/login/login.command'
-import { JwtAuthGuard } from '../application/guards/jwt-auth.guard'
 
-@UseGuards(GrpcGuard)
+@AuthServiceControllerMethods()
 @Controller()
 export class AuthController {
   private readonly logger = new Logger(AuthController.name)
-  constructor(
-    private readonly queryBus: QueryBus,
-    private readonly commandBus: CommandBus,
-  ) {}
+  constructor(private readonly commandBus: CommandBus) {}
 
-  @GrpcMethod('AuthService', 'generateToken')
-  async generateToken(data: GenerateTokenRequest): Promise<Token> {
+  @GrpcMethod('AuthService', 'generateAccessToken')
+  async generateAccessToken(
+    data: GenerateAccessTokenRequest,
+  ): Promise<GenerateAccessTokenResponse> {
     this.logger.log(`Generating token: ${JSON.stringify(data)}`)
 
-    const command = new GenerateTokenCommand(data)
-    return await this.commandBus.execute<GenerateTokenCommand, Token>(command)
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @GrpcMethod('AuthService', 'isTokenValid')
-  async verifyToken(@Body() body): Promise<any> {
-    this.logger.log(`Verifying token: ${JSON.stringify(body)}`)
-
-    return new SuccessResponseDto({
-      accessToken: body.token,
-    })
+    const command = new GenerateAccessTokenCommand(data)
+    return await this.commandBus.execute<GenerateAccessTokenCommand, GenerateAccessTokenResponse>(
+      command,
+    )
   }
 
   @GrpcMethod('AuthService', 'login')
@@ -52,5 +51,13 @@ export class AuthController {
 
     const command = new RegisterCommand(data)
     return await this.commandBus.execute<RegisterCommand, Token>(command)
+  }
+
+  @GrpcMethod('AuthService', 'logout')
+  async logout(data: LogoutRequest): Promise<ResponseDto> {
+    this.logger.log(`Logging out user: ${JSON.stringify(data)}`)
+
+    const command = new LogoutCommand(data)
+    return await this.commandBus.execute<LogoutCommand, ResponseDto>(command)
   }
 }

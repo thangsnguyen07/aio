@@ -1,35 +1,17 @@
-import { Inject, Injectable, Logger } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
-import { ClientGrpc, RpcException } from '@nestjs/microservices'
+import { ClientGrpc } from '@nestjs/microservices'
 
-import { Token, USER_SERVICE_NAME, UserServiceClient } from 'proto'
-import { catchError, lastValueFrom, throwError } from 'rxjs'
+import { Token, USER_SERVICE_NAME } from 'proto'
 
 @Injectable()
 export class AuthService {
-  private userClient: UserServiceClient
-
   constructor(
     @Inject(USER_SERVICE_NAME) private readonly client: ClientGrpc,
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
   ) {}
-
-  async validateUser(username: string, password: string): Promise<any> {
-    try {
-      const req = this.userClient
-        .validateUser({ username, password })
-        .pipe(catchError((error) => throwError(() => new RpcException(error))))
-
-      const result = await lastValueFrom(req)
-
-      return result
-    } catch (error) {
-      Logger.log(error)
-      throw error
-    }
-  }
 
   async generateToken(userId: string): Promise<Token> {
     const [accessToken, refreshToken] = await Promise.all([
@@ -53,9 +35,5 @@ export class AuthService {
       accessToken,
       refreshToken,
     }
-  }
-
-  onModuleInit(): void {
-    this.userClient = this.client.getService<UserServiceClient>(USER_SERVICE_NAME)
   }
 }

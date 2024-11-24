@@ -3,25 +3,22 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { RpcException } from '@nestjs/microservices'
 
 import { status } from '@grpc/grpc-js'
-import { GenerateAccessTokenResponse } from 'proto'
+import { ResponseDto } from 'proto'
 
 import { UserTokenRepositoryPort } from '@/domain/user-token.repository.port'
 
-import { AuthService } from '@/application/auth.service'
 import { InjectionToken } from '@/application/injection-token'
 
-import { GenerateAccessTokenCommand } from './generate-access-token.command'
+import { LogoutCommand } from './logout.command'
 
-@CommandHandler(GenerateAccessTokenCommand)
-export class GenerateAccessTokenHandler implements ICommandHandler<GenerateAccessTokenCommand> {
+@CommandHandler(LogoutCommand)
+export class LogoutCommandHandler implements ICommandHandler<LogoutCommand, ResponseDto> {
   constructor(
     @Inject(InjectionToken.USER_TOKEN_REPOSITORY)
     private readonly userTokenRepository: UserTokenRepositoryPort,
-    @Inject(InjectionToken.AUTH_SERVICE)
-    private readonly authService: AuthService,
   ) {}
 
-  async execute(command: GenerateAccessTokenCommand): Promise<GenerateAccessTokenResponse> {
+  async execute(command: LogoutCommand): Promise<ResponseDto> {
     try {
       const { userId } = command
 
@@ -34,10 +31,12 @@ export class GenerateAccessTokenHandler implements ICommandHandler<GenerateAcces
         })
       }
 
-      const token = await this.authService.generateToken(userToken.getProps().userId)
+      userToken.update({ refreshToken: null })
+
+      this.userTokenRepository.save(userToken)
 
       return {
-        accessToken: token.accessToken,
+        success: true,
       }
     } catch (error) {
       throw error

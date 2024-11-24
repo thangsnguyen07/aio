@@ -8,7 +8,7 @@ export class UserTokenEntity {
   @Column({ name: 'user_id', unique: true })
   userId: string
 
-  @Column({ name: 'refresh_token' })
+  @Column({ name: 'refresh_token', nullable: true })
   refreshToken: string
 
   @Column({ name: 'revoked_at', nullable: true })

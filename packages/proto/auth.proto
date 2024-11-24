@@ -3,11 +3,10 @@ syntax="proto3";
 package auth;
 
 service AuthService {
-    rpc IsTokenValid (TokenRequest) returns (ResponseDto) {}
     rpc GenerateAccessToken (GenerateAccessTokenRequest) returns (GenerateAccessTokenResponse) {}
     rpc Login(LoginRequest) returns (Token) {}
     rpc Register(RegisterRequest) returns (Token) {}
-    rpc Logout(TokenRequest) returns (ResponseDto) {}
+    rpc Logout(LogoutRequest) returns (ResponseDto) {}
 }
 
 message LoginRequest {
@@ -26,7 +25,11 @@ message ResponseDto {
 }
 
 message GenerateAccessTokenRequest {
-    string refreshToken = 1;
+    string userId = 1;
+}
+
+message LogoutRequest {
+    string userId = 1;
 }
 
 message GenerateAccessTokenResponse {
@@ -37,8 +40,3 @@ message Token {
     string accessToken = 1;
     string refreshToken = 2;
 }
-
-message TokenRequest {
-    string accessToken = 1;
-}
-

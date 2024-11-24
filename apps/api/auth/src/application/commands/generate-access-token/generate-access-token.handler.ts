@@ -3,7 +3,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { RpcException } from '@nestjs/microservices'
 
 import { status } from '@grpc/grpc-js'
-import { Token } from 'proto'
+import { GenerateAccessTokenResponse } from 'proto'
 
 import { UserTokenRepositoryPort } from '@/domain/user-token.repository.port'
 
@@ -21,7 +21,7 @@ export class GenerateAccessTokenHandler implements ICommandHandler<GenerateAcces
     private readonly authService: AuthService,
   ) {}
 
-  async execute(command: GenerateAccessTokenCommand): Promise<Token> {
+  async execute(command: GenerateAccessTokenCommand): Promise<GenerateAccessTokenResponse> {
     try {
       const { userId } = command
 
@@ -38,7 +38,6 @@ export class GenerateAccessTokenHandler implements ICommandHandler<GenerateAcces
 
       return {
         accessToken: token.accessToken,
-        refreshToken: userToken.getProps().refreshToken,
       }
     } catch (error) {
       throw error

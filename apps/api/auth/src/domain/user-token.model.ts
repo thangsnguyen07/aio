@@ -15,7 +15,7 @@ export class UserToken extends AggregateRoot<UserTokenProps> {
   }
 
   update(payload: Partial<UserTokenProps>): void {
-    if (payload.refreshToken) {
+    if (payload.refreshToken || payload.refreshToken === null) {
       this.props.refreshToken = payload.refreshToken
     }
 

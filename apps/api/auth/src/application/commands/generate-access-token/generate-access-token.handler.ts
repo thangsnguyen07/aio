@@ -13,24 +13,24 @@ import { InjectionToken } from '@/application/injection-token'
 import { GenerateAccessTokenCommand } from './generate-access-token.command'
 
 @CommandHandler(GenerateAccessTokenCommand)
-export class GenerateTokenHandler implements ICommandHandler<GenerateAccessTokenCommand> {
+export class GenerateAccessTokenHandler implements ICommandHandler<GenerateAccessTokenCommand> {
   constructor(
     @Inject(InjectionToken.USER_TOKEN_REPOSITORY)
-    private readonly repository: UserTokenRepositoryPort,
+    private readonly userTokenRepository: UserTokenRepositoryPort,
     @Inject(InjectionToken.AUTH_SERVICE)
     private readonly authService: AuthService,
   ) {}
 
   async execute(command: GenerateAccessTokenCommand): Promise<Token> {
     try {
-      const { refreshToken } = command
+      const { userId } = command
 
-      const userToken = await this.repository.findOneByRefreshToken(refreshToken)
+      const userToken = await this.userTokenRepository.findOneByUserId(userId)
 
       if (!userToken) {
         throw new RpcException({
           code: status.INVALID_ARGUMENT,
-          message: 'Invalid token',
+          message: 'User does not exists',
         })
       }
 
@@ -38,7 +38,7 @@ export class GenerateTokenHandler implements ICommandHandler<GenerateAccessToken
 
       return {
         accessToken: token.accessToken,
-        refreshToken,
+        refreshToken: userToken.getProps().refreshToken,
       }
     } catch (error) {
       throw error

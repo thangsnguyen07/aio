@@ -15,5 +15,18 @@
       }
     }
   ],
-  "nxCloudId": "66e94ed5e9bbae5a2c63abf8"
+  "namedInputs": {
+    "noMarkdown": ["{projectRoot}/**/*.md"]
+  },
+  "targetDefaults": {
+    "build": {
+      "inputs": ["noMarkdown", "^noMarkdown"]
+    },
+    "proto:generate": {
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "inputs": ["noMarkdown", "^noMarkdown"]
+    }
+  }
 }

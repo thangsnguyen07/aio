@@ -3,6 +3,8 @@ dist
 build
 .env
 
+.vscode
+
 
 .nx/cache
 .nx/workspace-data

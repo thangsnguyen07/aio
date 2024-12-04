@@ -1,0 +1,13 @@
+**/node_modules
+**/proto-temp
+**/build-proto.sh
+**/Dockerfile
+**/dist
+
+README.md
+.git
+npm-debug.log
+.coverage
+.coverage.*
+.aws
+.dockerignore

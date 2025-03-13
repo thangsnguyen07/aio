@@ -1,9 +1,4 @@
-**/node_modules
-**/proto-temp
-**/build-proto.sh
-**/Dockerfile
-**/dist
-
+**/**/node_modules
 README.md
 .git
 npm-debug.log
@@ -11,3 +6,5 @@ npm-debug.log
 .coverage.*
 .aws
 .dockerignore
+.husky
+.idea

@@ -5,11 +5,12 @@ import { RpcException } from '@nestjs/microservices'
 import { status } from '@grpc/grpc-js'
 import * as bcrypt from 'bcrypt'
 import { User as CreateUserResponse } from 'proto'
-import { User } from 'src/domain/user.model'
-import { UserRepositoryPort } from 'src/domain/user.repository.port'
 
-import { InjectionToken } from '../../injection-token'
-import { CreateUserCommand } from './create-user.command'
+import { CreateUserCommand } from '@/domain/use-cases/commands/create-user.command'
+import { User } from '@/domain/user.model'
+import { UserRepositoryPort } from '@/domain/user.repository.port'
+
+import { InjectionToken } from '../injection-token'
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand, CreateUserResponse> {

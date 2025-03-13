@@ -4,10 +4,11 @@ import { RpcException } from '@nestjs/microservices'
 
 import { status } from '@grpc/grpc-js'
 import { User as GetUserByIdResponse } from 'proto'
-import { UserRepositoryPort } from 'src/domain/user.repository.port'
 
-import { InjectionToken } from '../../injection-token'
-import { GetUserByIdQuery } from './get-user-by-id.query'
+import { GetUserByIdQuery } from '@/domain/use-cases/queries/get-user-by-id.query'
+import { UserRepositoryPort } from '@/domain/user.repository.port'
+
+import { InjectionToken } from '../injection-token'
 
 @QueryHandler(GetUserByIdQuery)
 export class GetUserByIdQueryHandler

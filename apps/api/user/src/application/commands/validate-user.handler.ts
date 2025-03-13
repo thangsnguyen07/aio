@@ -4,10 +4,11 @@ import { RpcException } from '@nestjs/microservices'
 
 import { status } from '@grpc/grpc-js'
 import { ValidateUserResponse } from 'proto'
-import { UserRepositoryPort } from 'src/domain/user.repository.port'
 
-import { InjectionToken } from '../../injection-token'
-import { ValidateUserCommand } from './validate-user.command'
+import { ValidateUserCommand } from '@/domain/use-cases/commands/validate-user.command'
+import { UserRepositoryPort } from '@/domain/user.repository.port'
+
+import { InjectionToken } from '../injection-token'
 
 @CommandHandler(ValidateUserCommand)
 export class ValidateUserHandler

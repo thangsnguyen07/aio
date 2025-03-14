@@ -13,6 +13,7 @@ import { InjectionToken } from './application/injection-token'
 import { queryHandlers } from './application/queries'
 
 import { UserEntity } from './infrastructure/entities/user.entity'
+import { UserMapper } from './infrastructure/mappers/user.mapper'
 import { UserRepository } from './infrastructure/repositories/user.repository'
 
 import { UserController } from './presentation/user.controller'
@@ -27,6 +28,10 @@ const providers: Provider[] = [
   {
     provide: InjectionToken.USER_REPOSITORY,
     useClass: UserRepository,
+  },
+  {
+    provide: InjectionToken.USER_MAPPER,
+    useClass: UserMapper,
   },
 ]
 

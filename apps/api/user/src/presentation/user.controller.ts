@@ -10,10 +10,10 @@ import {
 } from 'proto'
 import { User } from 'proto'
 
-import { CreateUserCommand } from '../application/commands/create-user/create-user.command'
-import { UpdateUserPasswordCommand } from '../application/commands/update-password/update-password.command'
-import { ValidateUserCommand } from '../application/commands/validate-user/validate-user.command'
-import { GetUserByIdQuery } from '../application/queries/get-user-by-id/get-user-by-id.query'
+import { CreateUserCommand } from '@/domain/use-cases/commands/create-user.command'
+import { UpdateUserPasswordCommand } from '@/domain/use-cases/commands/update-password.command'
+import { ValidateUserCommand } from '@/domain/use-cases/commands/validate-user.command'
+import { GetUserByIdQuery } from '@/domain/use-cases/queries/get-user-by-id.query'
 
 @UserServiceControllerMethods()
 export class UserController {

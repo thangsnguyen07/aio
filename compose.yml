@@ -1,0 +1,66 @@
+services:
+  postgresql:
+    image: postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/postgresql/init/schemas.sql:/docker-entrypoint-initdb.d/schemas.sql
+    networks:
+      - all-in-one
+
+  api_gateway:
+    container_name: api_gateway
+    build:
+      context: ./packages
+      args:
+        - SERVICE_NAME=api-gateway
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./packages:/app
+    command: npm run start:dev api-gateway
+    networks:
+      - all-in-one
+
+  user_service:
+    container_name: user_service
+    build:
+      context: .
+      args:
+        - SERVICE_NAME=user
+        - PORT=5000
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./apps/api/user:/app
+      - /app/node_modules
+    network_mode: host
+
+  auth_service:
+    container_name: auth_service
+    build:
+      context: .
+      args:
+        - SERVICE_NAME=auth
+        - PORT=5001
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./apps/api/auth:/app
+      - /app/node_modules
+    network_mode: host
+    depends_on:
+      - user_service
+
+volumes:
+  pgdata:
+    driver: local
+
+networks:
+  all-in-one:
+    external: true

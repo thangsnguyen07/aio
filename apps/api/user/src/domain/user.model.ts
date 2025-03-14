@@ -1,9 +1,8 @@
-import * as bcrypt from 'bcrypt'
 import { AggregateID, AggregateRoot } from 'core'
 import { randomUUID } from 'crypto'
 
-import { UserEntity } from '../infrastructure/entities/user.entity'
 import { UserProps } from './user.type'
+import { Password } from './value-objects/password.vo'
 
 export class User extends AggregateRoot<UserProps> {
   protected readonly _id: AggregateID
@@ -16,25 +15,8 @@ export class User extends AggregateRoot<UserProps> {
     return user
   }
 
-  static loadFromEntity(entity: UserEntity): User {
-    const { id, createdAt, updatedAt, deletedAt, ...props } = entity
-
-    return new User({ id, props, createdAt, updatedAt, deletedAt })
-  }
-
-  /**
-   * Compare a given password with the stored password hash.
-   *
-   * @param {string} password - The password to compare.
-   * @return {Promise<boolean>} A promise that resolves to true if the passwords match, false otherwise.
-   */
-  async comparePassword(password: string): Promise<boolean> {
-    return await bcrypt.compare(password, this.props.password)
-  }
-
-  async updatePassword(password: string): Promise<void> {
-    const hashedPassword = await bcrypt.hash(password, 10)
-    this.props.password = hashedPassword
+  async updatePassword(password: Password): Promise<void> {
+    this.props.password = password
   }
 
   validate(): void {

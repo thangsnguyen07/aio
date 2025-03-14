@@ -32,7 +32,9 @@ export class GetUserByIdQueryHandler
     return {
       id: user.id,
       username: user.getProps().username,
-      email: user.getProps().email,
+      email: user.getProps().email.value,
+      isActive: user.getProps().isActive,
+      isVerified: user.getProps().isVerified,
     }
   }
 }

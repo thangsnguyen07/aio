@@ -30,7 +30,7 @@ export class ValidateUserHandler
       })
     }
 
-    const isMatch = await user.comparePassword(password)
+    const isMatch = await user.getProps().password.compare(password)
 
     if (!isMatch) {
       throw new RpcException({

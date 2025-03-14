@@ -3,11 +3,11 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { RpcException } from '@nestjs/microservices'
 
 import { status } from '@grpc/grpc-js'
-import * as bcrypt from 'bcrypt'
 import { SuccessResponseDto } from 'core'
 
 import { UpdateUserPasswordCommand } from '@/domain/use-cases/commands/update-password.command'
 import { UserRepositoryPort } from '@/domain/user.repository.port'
+import { Password } from '@/domain/value-objects/password.vo'
 
 import { InjectionToken } from '../injection-token'
 
@@ -28,9 +28,9 @@ export class UpdateUserPasswordHandler implements ICommandHandler<UpdateUserPass
       })
     }
 
-    const hashedCurrentPassword = await bcrypt.hash(currentPassword, 10)
+    const hashedCurrentPassword = await Password.create(currentPassword)
 
-    const isMatch = await user.comparePassword(hashedCurrentPassword)
+    const isMatch = await user.getProps().password.compare(hashedCurrentPassword.getHashedValue())
 
     if (!isMatch) {
       throw new RpcException({
@@ -39,7 +39,7 @@ export class UpdateUserPasswordHandler implements ICommandHandler<UpdateUserPass
       })
     }
 
-    user.updatePassword(newPassword)
+    user.updatePassword(await Password.create(newPassword))
 
     this.repository.save(user)
 

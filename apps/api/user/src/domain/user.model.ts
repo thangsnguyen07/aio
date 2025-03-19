@@ -1,4 +1,4 @@
-import { AggregateID, AggregateRoot } from 'core'
+import { AggregateID, AggregateRoot, ArgumentInvalidException } from 'core'
 import { randomUUID } from 'crypto'
 
 import { UserProps } from './user.type'
@@ -20,6 +20,12 @@ export class User extends AggregateRoot<UserProps> {
   }
 
   validate(): void {
-    // entity business rules validation to protect it's invariant before saving entity to a database
+    if (!this.props.username) {
+      throw new ArgumentInvalidException('Username is required')
+    }
+
+    if (!this.props.password) {
+      throw new ArgumentInvalidException('Password is required')
+    }
   }
 }

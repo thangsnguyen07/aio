@@ -33,6 +33,8 @@ message User {
     string id = 1;
     string username = 2;
     string email = 3;
+    bool isActive = 4;
+    bool isVerified = 5;
 }
 
 message Users {

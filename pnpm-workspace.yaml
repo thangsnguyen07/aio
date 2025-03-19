@@ -1,4 +1,8 @@
 packages:
-  # - 'apps/*'
-  - "apps/api/*"
-  - "packages/*"
+  - apps/api/*
+  - packages/*
+onlyBuiltDependencies:
+  - '@nestjs/core'
+  - bcrypt
+  - nx
+  - protobufjs

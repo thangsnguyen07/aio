@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 
 import { CreateUserRequest, GetUserByIdRequest } from 'proto'
 
-import { GetUserByIdQuery } from '../application/queries/get-user-by-id/get-user-by-id.query'
+import { GetUserByIdQuery } from '../domain/use-cases/queries/get-user-by-id.query'
 import { UserController } from './user.controller'
 
 describe('UserController', () => {

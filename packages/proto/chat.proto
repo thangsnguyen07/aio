@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package chat;
+
+service ChatService {
+  rpc SendMessage (SendMessageRequest) returns (MessageResponse) {}
+  rpc GetMessages (GetMessagesRequest) returns (GetMessagesResponse) {}
+  rpc CreateRoom (CreateRoomRequest) returns (RoomResponse) {}
+  rpc JoinRoom (JoinRoomRequest) returns (RoomResponse) {}
+}
+
+message SendMessageRequest {
+  string roomId = 1;
+  string content = 2;
+}
+
+message MessageResponse {
+  string id = 1;
+  string roomId = 2;
+  string content = 3;
+  string senderId = 4;
+  string createdAt = 5;
+}
+
+message GetMessagesRequest {
+  string roomId = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+
+message GetMessagesResponse {
+  string roomId = 1;
+  repeated MessageResponse messages = 2;
+  int32 limit = 3;  
+  int32 offset = 4;
+  int32 total = 5;
+}
+
+message CreateRoomRequest {
+  string name = 1;
+  repeated string participantIds = 2;
+}
+
+message RoomResponse {
+  string id = 1;
+  string name = 2;
+  repeated string participantIds = 3;
+}
+
+message JoinRoomRequest {
+  string roomId = 1;
+}

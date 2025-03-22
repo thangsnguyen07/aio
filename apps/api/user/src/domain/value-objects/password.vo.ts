@@ -33,6 +33,6 @@ export class Password {
   }
 
   async compare(plainPassword: string): Promise<boolean> {
-    return bcrypt.compare(plainPassword, this.value)
+    return await bcrypt.compare(plainPassword, this.value)
   }
 }

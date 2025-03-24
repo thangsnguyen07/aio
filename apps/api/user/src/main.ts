@@ -2,6 +2,7 @@ import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 
+import { GrpcExceptionInterceptor } from 'core'
 import { config } from 'dotenv'
 
 import { UserModule } from './user.module'
@@ -17,6 +18,8 @@ async function bootstrap(): Promise<void> {
       url: '0.0.0.0:5000',
     },
   })
+
+  app.useGlobalInterceptors(new GrpcExceptionInterceptor())
 
   await app.listen()
 

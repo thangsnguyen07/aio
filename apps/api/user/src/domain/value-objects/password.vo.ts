@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcrypt'
+import { ArgumentInvalidException } from 'core'
 
 export class Password {
   private static readonly PASSWORD_REGEX = /(?=^.{8,}$)(?=.*[A-Z])(?=.*[a-z])(?=.*\W)(?=.*\d)/
@@ -11,7 +12,7 @@ export class Password {
 
   static async create(plainPassword: string): Promise<Password> {
     if (!Password.validate(plainPassword)) {
-      throw new Error(
+      throw new ArgumentInvalidException(
         'Password must contain at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character',
       )
     }

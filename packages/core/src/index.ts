@@ -5,6 +5,7 @@ export { RequestContextService } from './application/context/app-request.context
 export { ContextInterceptor } from './application/interceptors/context.interceptor'
 export { ExceptionInterceptor } from './application/interceptors/exception.interceptor'
 export { GrpcLoggingInterceptor } from './application/interceptors/grpc-logging.interceptor'
+export { GrpcExceptionInterceptor } from './application/interceptors/grpc-exception.interceptor'
 export { GrpcGuard } from './application/guards/grpc.guard'
 
 // database
@@ -28,6 +29,7 @@ export * from './types/object-literal.type'
 
 // utils
 export * from './utils/helper'
+export * from './utils/exception-status.mapper'
 
 // shared
 export * from './shared'

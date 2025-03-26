@@ -15,7 +15,7 @@ import { UserService } from './user.service'
         options: {
           package: 'user',
           protoPath: 'node_modules/proto/user.proto',
-          url: '0.0.0.0:5001',
+          url: '0.0.0.0:5000',
         },
       },
       {
@@ -24,7 +24,7 @@ import { UserService } from './user.service'
         options: {
           package: 'auth',
           protoPath: 'node_modules/proto/auth.proto',
-          url: '0.0.0.0:5000',
+          url: '0.0.0.0:5001',
         },
       },
     ]),

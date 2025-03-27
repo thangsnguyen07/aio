@@ -1,0 +1,4 @@
+export const InjectionToken = {
+  CHAT_ROOM_REPOSITORY: 'CHAT_ROOM_REPOSITORY',
+  CHAT_ROOM_MAPPER: 'CHAT_ROOM_MAPPER',
+} as const

@@ -1,6 +1,10 @@
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { GrpcMethod, RpcException } from '@nestjs/microservices'
 
+import { SendMessageCommand } from '@/modules/chat/domain/use-cases/commands/send-message.command'
+import { GetMessagesQuery } from '@/modules/chat/domain/use-cases/queries/get-messages.query'
+import { CreateRoomCommand } from '@/modules/room/domain/use-cases/commands/create-room.command'
+import { JoinRoomCommand } from '@/modules/room/domain/use-cases/commands/join-room.command'
 import { status } from '@grpc/grpc-js'
 import {
   ChatServiceControllerMethods,
@@ -9,11 +13,6 @@ import {
   JoinRoomRequest,
   SendMessageRequest,
 } from 'proto'
-
-import { CreateRoomCommand } from '@/domain/use-cases/commands/create-room.command'
-import { JoinRoomCommand } from '@/domain/use-cases/commands/join-room.command'
-import { SendMessageCommand } from '@/domain/use-cases/commands/send-message.command'
-import { GetMessagesQuery } from '@/domain/use-cases/queries/get-messages.query'
 
 @ChatServiceControllerMethods()
 export class ChatController {

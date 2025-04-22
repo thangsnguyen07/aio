@@ -1,6 +1,5 @@
 import { EventEmitter2 } from '@nestjs/event-emitter'
 
-import { RequestContextService } from '../application/context/app-request.context'
 import { LoggerPort } from '../ports/logger.port'
 import { DomainEvent } from './domain-event.base'
 import { BaseModel } from './model.base'
@@ -24,9 +23,9 @@ export abstract class AggregateRoot<Props> extends BaseModel<Props> {
     await Promise.all(
       this.domainEvents.map(async (event) => {
         logger.debug(
-          `[${RequestContextService.getRequestId()}] "${
+          `[${
             event.constructor.name
-          }" event published for aggregate ${this.constructor.name} : ${this.id}`,
+          }] event published for aggregate ${this.constructor.name} : ${this.id}`,
         )
 
         return eventEmitter.emitAsync(event.constructor.name, event)

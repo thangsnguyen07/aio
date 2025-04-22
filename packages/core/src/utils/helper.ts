@@ -29,4 +29,15 @@ export class Helper {
 
     return false
   }
+
+  /**
+   * Checks if value is a valid date.
+   */
+  static isValidDate(value: string | Date): boolean {
+    if (typeof value === 'string') {
+      return !isNaN(new Date(value).getTime())
+    }
+
+    return value instanceof Date && !isNaN(value.getTime())
+  }
 }

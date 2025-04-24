@@ -7,6 +7,7 @@ import { GenerateAccessTokenResponse } from 'proto'
 
 import { GenerateAccessTokenCommand } from '../../domain/use-cases/commands/generate-access-token.command'
 import { UserTokenRepositoryPort } from '../../domain/user-token.repository.port'
+import { AuthService } from '../auth.service'
 import { InjectionToken } from '../injection-token'
 
 @CommandHandler(GenerateAccessTokenCommand)
@@ -14,6 +15,8 @@ export class GenerateAccessTokenHandler implements ICommandHandler<GenerateAcces
   constructor(
     @Inject(InjectionToken.USER_TOKEN_REPOSITORY)
     private readonly userTokenRepository: UserTokenRepositoryPort,
+    @Inject(InjectionToken.AUTH_SERVICE)
+    private readonly authService: AuthService,
   ) {}
 
   async execute(command: GenerateAccessTokenCommand): Promise<GenerateAccessTokenResponse> {
@@ -29,12 +32,10 @@ export class GenerateAccessTokenHandler implements ICommandHandler<GenerateAcces
         })
       }
 
-      // const token = await this.authService.generateToken(userToken.getProps().userId)
+      const accessToken = await this.authService.generateAccessToken(userToken.getProps().userId)
 
       return {
-        // accessToken: token.accessToken,
-        // refreshToken: token.refreshToken,
-        accessToken: 'accessToken',
+        accessToken,
       }
     } catch (error) {
       throw error

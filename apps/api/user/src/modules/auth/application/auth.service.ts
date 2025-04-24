@@ -4,6 +4,8 @@ import { JwtService } from '@nestjs/jwt'
 
 import { Token } from 'proto'
 
+import { JwtClaims } from '../domain/jwt-claims.type'
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -14,14 +16,14 @@ export class AuthService {
   async generateToken(userId: string): Promise<Token> {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
-        { sub: userId },
+        { userId },
         {
           secret: this.configService.get('JWT_ACCESS_SECRET'),
-          expiresIn: '15m',
+          expiresIn: '1d',
         },
       ),
       this.jwtService.signAsync(
-        { sub: userId },
+        { userId },
         {
           secret: this.configService.get('JWT_REFRESH_SECRET'),
           expiresIn: '7d',
@@ -32,6 +34,46 @@ export class AuthService {
     return {
       accessToken,
       refreshToken,
+    }
+  }
+
+  async generateAccessToken(userId: string): Promise<string> {
+    return this.jwtService.signAsync(
+      { userId },
+      {
+        secret: this.configService.get('JWT_ACCESS_SECRET'),
+        expiresIn: '1d',
+      },
+    )
+  }
+
+  async generateRefreshToken(userId: string): Promise<string> {
+    return this.jwtService.signAsync(
+      { userId },
+      {
+        secret: this.configService.get('JWT_REFRESH_SECRET'),
+        expiresIn: '7d',
+      },
+    )
+  }
+
+  async verifyRefreshToken(token: string): Promise<JwtClaims> {
+    try {
+      return await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get('JWT_REFRESH_SECRET'),
+      })
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async validateAccessToken(token: string): Promise<JwtClaims> {
+    try {
+      return await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get('JWT_ACCESS_SECRET'),
+      })
+    } catch (error) {
+      throw error
     }
   }
 }

@@ -24,14 +24,20 @@ export class User extends AggregateRoot<UserProps> {
     return user
   }
 
+  update(payload: Partial<UserProps>): void {
+    if (payload.email) {
+      this.props.email = payload.email
+    }
+  }
+
   async updatePassword(password: Password): Promise<void> {
     this.props.password = password
   }
 
   validate(): void {
-    // if (!this.props.username) {
-    //   throw new ArgumentInvalidException('Username is required')
-    // }
+    if (!this.props.email) {
+      throw new ArgumentInvalidException('Email is required')
+    }
 
     if (!this.props.password) {
       throw new ArgumentInvalidException('Password is required')

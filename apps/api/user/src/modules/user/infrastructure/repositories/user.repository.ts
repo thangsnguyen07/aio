@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 
 import { InjectionToken } from '@/modules/user/application/injection-token'
 import { Paginated, PaginatedQueryParams } from 'core'
-import { Repository } from 'typeorm'
+import { Equal, Repository } from 'typeorm'
 
 import { User } from '../../domain/user.model'
 import { UserRepositoryPort } from '../../domain/user.repository.port'
@@ -22,17 +22,17 @@ export class UserRepository implements UserRepositoryPort {
   ) {}
 
   async findOneById(id: string): Promise<User | null> {
-    const entity = await this.userRepository.findOneBy({ id })
+    const entity = await this.userRepository.findOneBy({ id: Equal(id) })
     return entity ? this.userMapper.toDomain(entity) : null
   }
 
   async findOneByEmail(email: string): Promise<User | null> {
-    const entity = await this.userRepository.findOneBy({ email })
+    const entity = await this.userRepository.findOneBy({ email: Equal(email) })
     return entity ? this.userMapper.toDomain(entity) : null
   }
 
   async findOneByUsername(username: string): Promise<User | null> {
-    const entity = await this.userRepository.findOneBy({ username })
+    const entity = await this.userRepository.findOneBy({ username: Equal(username) })
     return entity ? this.userMapper.toDomain(entity) : null
   }
 
@@ -86,11 +86,6 @@ export class UserRepository implements UserRepositoryPort {
 
   async existsByEmail(email: string): Promise<boolean> {
     const count = await this.userRepository.count({ where: { email } })
-    return count > 0
-  }
-
-  async existsByUsername(username: string): Promise<boolean> {
-    const count = await this.userRepository.count({ where: { username } })
     return count > 0
   }
 }

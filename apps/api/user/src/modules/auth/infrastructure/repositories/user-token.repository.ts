@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { Paginated, PaginatedQueryParams } from 'core'
-import { Repository } from 'typeorm'
+import { Equal, Repository } from 'typeorm'
 
 import { InjectionToken } from '../../application/injection-token'
 import { UserToken } from '../../domain/user-token.model'
@@ -18,17 +18,17 @@ export class UserTokenRepository implements UserTokenRepositoryPort {
   ) {}
 
   async findOneByUserId(userId: string): Promise<UserToken | null> {
-    const entity = await this.userRepository.findOneBy({ userId })
+    const entity = await this.userRepository.findOneBy({ userId: Equal(userId) })
     return entity ? this.mapper.toDomain(entity) : null
   }
 
   async findOneByRefreshToken(refreshToken: string): Promise<UserToken | null> {
-    const entity = await this.userRepository.findOneBy({ refreshToken })
+    const entity = await this.userRepository.findOneBy({ refreshToken: Equal(refreshToken) })
     return entity ? this.mapper.toDomain(entity) : null
   }
 
   async findOneById(id: string): Promise<UserToken | null> {
-    const entity = await this.userRepository.findOneBy({ id })
+    const entity = await this.userRepository.findOneBy({ id: Equal(id) })
     return entity ? this.mapper.toDomain(entity) : null
   }
 

@@ -21,12 +21,6 @@ export interface PaginationRequest {
   limit: number;
 }
 
-export interface BaseResponse {
-  message: string;
-  statusCode: number;
-  success: boolean;
-}
-
 export interface User {
   id: string;
   username: string;
@@ -47,24 +41,54 @@ export interface GetUserByIdRequest {
   id: string;
 }
 
-export interface UpdateUserRequest {
-  id: string;
-  password: string;
-}
-
 export interface UpdateUserPasswordRequest {
   userId: string;
   currentPassword: string;
   newPassword: string;
 }
 
-export interface ValidateUserRequest {
-  username: string;
+export interface UpdateUserRequest {
+  userId: string;
+  email: string;
+}
+
+export interface LoginRequest {
+  email: string;
   password: string;
 }
 
-export interface ValidateUserResponse {
-  id: string;
+export interface RegisterRequest {
+  email: string;
+  password: string;
+}
+
+export interface Token {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface LogoutRequest {
+  userId: string;
+}
+
+export interface LogoutResponse {
+  message: string;
+}
+
+export interface RefreshRequest {
+  refreshToken: string;
+}
+
+export interface RefreshResponse {
+  accessToken: string;
+}
+
+export interface GenerateAccessTokenRequest {
+  userId: string;
+}
+
+export interface GenerateAccessTokenResponse {
+  accessToken: string;
 }
 
 export interface UserServiceClient {
@@ -76,9 +100,22 @@ export interface UserServiceClient {
 
   updateUserPassword(request: UpdateUserPasswordRequest, metadata?: Metadata): Observable<User>;
 
+  updateUser(request: UpdateUserRequest, metadata?: Metadata): Observable<User>;
+
   listUsers(request: PaginationRequest, metadata?: Metadata): Observable<Users>;
 
-  validateUser(request: ValidateUserRequest, metadata?: Metadata): Observable<ValidateUserResponse>;
+  login(request: LoginRequest, metadata?: Metadata): Observable<Token>;
+
+  register(request: RegisterRequest, metadata?: Metadata): Observable<Token>;
+
+  logout(request: LogoutRequest, metadata?: Metadata): Observable<LogoutResponse>;
+
+  refresh(request: RefreshRequest, metadata?: Metadata): Observable<RefreshResponse>;
+
+  generateAccessToken(
+    request: GenerateAccessTokenRequest,
+    metadata?: Metadata,
+  ): Observable<GenerateAccessTokenResponse>;
 }
 
 export interface UserServiceController {
@@ -90,12 +127,28 @@ export interface UserServiceController {
 
   updateUserPassword(request: UpdateUserPasswordRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
 
+  updateUser(request: UpdateUserRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
+
   listUsers(request: PaginationRequest, metadata?: Metadata): Promise<Users> | Observable<Users> | Users;
 
-  validateUser(
-    request: ValidateUserRequest,
+  login(request: LoginRequest, metadata?: Metadata): Promise<Token> | Observable<Token> | Token;
+
+  register(request: RegisterRequest, metadata?: Metadata): Promise<Token> | Observable<Token> | Token;
+
+  logout(
+    request: LogoutRequest,
     metadata?: Metadata,
-  ): Promise<ValidateUserResponse> | Observable<ValidateUserResponse> | ValidateUserResponse;
+  ): Promise<LogoutResponse> | Observable<LogoutResponse> | LogoutResponse;
+
+  refresh(
+    request: RefreshRequest,
+    metadata?: Metadata,
+  ): Promise<RefreshResponse> | Observable<RefreshResponse> | RefreshResponse;
+
+  generateAccessToken(
+    request: GenerateAccessTokenRequest,
+    metadata?: Metadata,
+  ): Promise<GenerateAccessTokenResponse> | Observable<GenerateAccessTokenResponse> | GenerateAccessTokenResponse;
 }
 
 export function UserServiceControllerMethods() {
@@ -105,8 +158,13 @@ export function UserServiceControllerMethods() {
       "getUser",
       "getUserById",
       "updateUserPassword",
+      "updateUser",
       "listUsers",
-      "validateUser",
+      "login",
+      "register",
+      "logout",
+      "refresh",
+      "generateAccessToken",
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);

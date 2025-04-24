@@ -10,14 +10,18 @@ import { ExtractJwt, Strategy } from 'passport-jwt'
 export class RefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
   constructor(configService: ConfigService) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (request: Request) => {
+          return request?.cookies?.['refresh-token']
+        },
+      ]),
       secretOrKey: configService.get<string>('jwt.refreshSecret'),
       passReqToCallback: true,
     })
   }
 
-  async validate(req: Request, payload: JwtPayload) {
-    const refreshToken = req.get('Authorization').replace('Bearer', '').trim()
-    return { ...payload, refreshToken }
+  async validate(_: Request, payload: JwtPayload) {
+    // const refreshToken = req.cookies?.['refresh-token']
+    return payload
   }
 }

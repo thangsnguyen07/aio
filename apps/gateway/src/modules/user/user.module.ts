@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 
-import { AUTH_SERVICE_NAME, USER_SERVICE_NAME } from 'proto'
+import { GrpcClientService } from '@/common/services/grpc-client.service'
+import { USER_SERVICE_NAME } from 'proto'
 
 import { UserController } from './user.controller'
 import { UserService } from './user.service'
@@ -18,18 +19,9 @@ import { UserService } from './user.service'
           url: '0.0.0.0:5000',
         },
       },
-      {
-        name: AUTH_SERVICE_NAME,
-        transport: Transport.GRPC,
-        options: {
-          package: 'auth',
-          protoPath: 'node_modules/proto/auth.proto',
-          url: '0.0.0.0:5001',
-        },
-      },
     ]),
   ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, GrpcClientService],
 })
-export class UserModule {}
+export class UserModule { }

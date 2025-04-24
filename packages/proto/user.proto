@@ -7,8 +7,14 @@ service UserService {
     rpc GetUser (GetUserRequest) returns (User) {}
     rpc GetUserById (GetUserByIdRequest) returns (User) {}
     rpc UpdateUserPassword (UpdateUserPasswordRequest) returns (User) {}
+    rpc UpdateUser (UpdateUserRequest) returns (User) {}
     rpc ListUsers (PaginationRequest) returns (Users) {}
-    rpc ValidateUser (ValidateUserRequest) returns (ValidateUserResponse) {}
+
+    rpc Login(LoginRequest) returns (Token) {}
+    rpc Register(RegisterRequest) returns (Token) {}
+    rpc Logout(LogoutRequest) returns (LogoutResponse) {}
+    rpc Refresh (RefreshRequest) returns (RefreshResponse) {}
+    rpc GenerateAccessToken (GenerateAccessTokenRequest) returns (GenerateAccessTokenResponse) {}
 }
 
 message CreateUserRequest {
@@ -21,12 +27,6 @@ message PaginationRequest {
     int32 page = 1;
     int32 skip = 2;
     int32 limit = 3;
-}
-
-message BaseResponse {
-    string message = 1;
-    int32 statusCode = 2;
-    bool success = 3;
 }
 
 message User {
@@ -48,23 +48,54 @@ message GetUserByIdRequest {
     string id = 1;
 }
 
-message UpdateUserRequest {
-    string id = 1;
-    string password = 2;
-}
-
 message UpdateUserPasswordRequest {
     string userId = 1;
     string currentPassword = 2;
     string newPassword = 3;
 }
 
-message ValidateUserRequest {
-    string username = 1;
+message UpdateUserRequest {
+    string userId = 1;
+    string email = 2; 
+}
+
+message LoginRequest {
+    string email = 1;
     string password = 2;
 }
 
-message ValidateUserResponse {
-    string id = 1;
+message RegisterRequest {
+    string email = 2;
+    string password = 3;
 }
+
+message Token {
+    string accessToken = 1;
+    string refreshToken = 2;
+}
+
+message LogoutRequest {
+    string userId = 1;
+}
+
+message LogoutResponse {
+    string message = 1;
+}
+
+message RefreshRequest {
+    string refreshToken = 1;
+}
+
+message RefreshResponse {
+    string accessToken = 1; 
+}
+
+message GenerateAccessTokenRequest {
+    string userId = 1;
+}
+
+message GenerateAccessTokenResponse {
+    string accessToken = 1;
+}
+
 

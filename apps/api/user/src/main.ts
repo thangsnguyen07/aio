@@ -5,12 +5,12 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 import { GrpcExceptionInterceptor } from 'core'
 import { config } from 'dotenv'
 
-import { UserModule } from './user.module'
+import { AppModule } from './app.module'
 
 config()
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(UserModule, {
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
     transport: Transport.GRPC,
     options: {
       package: 'user',

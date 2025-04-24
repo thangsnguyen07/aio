@@ -4,7 +4,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { PassportModule } from '@nestjs/passport'
 
-import { AUTH_SERVICE_NAME } from 'proto'
+import { USER_SERVICE_NAME } from 'proto'
 
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
@@ -18,11 +18,11 @@ import { RefreshTokenStrategy } from './strategies/refresh-token.strategy'
     JwtModule,
     ClientsModule.register([
       {
-        name: AUTH_SERVICE_NAME,
+        name: USER_SERVICE_NAME,
         transport: Transport.GRPC,
         options: {
-          package: 'auth',
-          protoPath: 'node_modules/proto/auth.proto',
+          package: 'user',
+          protoPath: 'node_modules/proto/user.proto',
           url: '0.0.0.0:5000',
           loader: {
             keepCase: true,
@@ -34,4 +34,4 @@ import { RefreshTokenStrategy } from './strategies/refresh-token.strategy'
   controllers: [AuthController],
   providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy],
 })
-export class AuthModule {}
+export class AuthModule { }
